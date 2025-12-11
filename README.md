@@ -119,7 +119,7 @@ IFT712_Project/
 │   │   ├── decision_tree_classifier.py  # Implémentation Decision Tree
 │   │   ├── neural_network_classifier.py # Implémentation Neural Network
 │   │   ├── knn_classifier.py          # Implémentation KNN
-│   │   ├── bayes_naive_classifier.py   # Implémentation Naive Bayes
+│   │   ├── naive_bayes_classifier.py   # Implémentation Naive Bayes
 │   │   └── logistic_regression_classifier.py # Implémentation Logistic Regression
 │   ├── evaluation/                    # Module d'évaluation et comparaison
 │   │   ├── __init__.py
