@@ -15,14 +15,12 @@ def preprocess_neo_data(df: pd.DataFrame) -> tuple:
     
     num_features = ['est_diameter_min', 'est_diameter_max', 'relative_velocity', 
                     'miss_distance', 'absolute_magnitude']
-    cat_features = ['orbiting_body']
 
-    X = df[num_features + cat_features]
+    X = df[num_features]
     y = df['hazardous']
 
     preprocessor = ColumnTransformer([
         ('num', StandardScaler(), num_features),
-        ('cat', OneHotEncoder(drop='first', sparse_output=False), cat_features)
     ])
 
     X_train, X_test, y_train, y_test = train_test_split(
