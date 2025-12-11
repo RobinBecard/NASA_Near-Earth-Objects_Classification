@@ -103,6 +103,7 @@ IFT712_Project/
 ├── .gitignore                         # Configuration Git
 ├── requirements.txt                   # Dépendances Python
 ├── setup.py                           # Configuration du projet Python
+├── IFT712_Project.pdf                 # Rapport final complet en pdf
 │
 ├── src/                               # Code source principal
 │   ├── __init__.py
@@ -141,10 +142,8 @@ IFT712_Project/
 │   ├── plots/                         # Visualisations générées
 │   └── comparisons/                   # Analyses comparatives
 │
-└── reports/                           # Rapport du projet
-    ├── rapport_ift712.pdf             # Rapport final complet
-    ├── class_diagram.png              # Diagramme de classes UML
-    └── figures/                       # Figures et tableaux du rapport
+
+
 ```
 
 ## Contenu du Notebook
