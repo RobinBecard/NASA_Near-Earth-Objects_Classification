@@ -4,17 +4,21 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 
+
 def preprocess_neo_data(df: pd.DataFrame) -> tuple:
-    """Preprocess the NEO dataset for modeling.
+    """
+    Preprocess the NEO dataset for modeling.
 
     Args:
         df (pd.DataFrame): Raw NEO dataset.
+
     Returns:
-        tuple: Preprocessed training and testing data (X_train, X_test, y_train, y_test).
+        tuple: Preprocessed training and testing data
+               (X_train, X_test, y_train, y_test).
     """
-    
-    num_features = ['est_diameter_min', 'est_diameter_max', 'relative_velocity', 
-                    'miss_distance', 'absolute_magnitude']
+    num_features = ['est_diameter_min', 'est_diameter_max',
+                    'relative_velocity', 'miss_distance',
+                    'absolute_magnitude']
     cat_features = ['orbiting_body']
 
     X = df[num_features + cat_features]
@@ -31,7 +35,7 @@ def preprocess_neo_data(df: pd.DataFrame) -> tuple:
 
     X_train = preprocessor.fit_transform(X_train)
     X_test = preprocessor.transform(X_test)
-    
+
     return X_train, X_test, y_train, y_test
 
 
