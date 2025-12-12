@@ -5,6 +5,19 @@
 paths:
   dataset: "datasets/neo.csv"
 
+# Data preprocessing configuration
+preprocessing:
+  numerical_features:
+    - "est_diameter_min"
+    - "est_diameter_max"
+    - "relative_velocity"
+    - "miss_distance"
+    - "absolute_magnitude"
+  target_column: "hazardous"
+  test_size: 0.2
+  random_state: 42
+  stratify: true
+
 # Model hyperparameters
 models:
   decision_tree:

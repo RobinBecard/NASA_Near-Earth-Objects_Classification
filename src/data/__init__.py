@@ -1,3 +1,7 @@
-from .loader import load_neo_dataset
+from .loader import NEODataLoader
+from .preprocessor import NEODataPreprocessor
 
-__all__ = ["load_neo_dataset"]
+__all__ = [
+    "NEODataLoader",
+    "NEODataPreprocessor"
+]
