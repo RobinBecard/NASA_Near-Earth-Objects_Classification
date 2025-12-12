@@ -1,0 +1,13 @@
+# Configuration file for IFT712 Project
+# NASA Near-Earth Objects (NEO) Classification
+
+# Paths configuration
+paths:
+  dataset: "datasets/neo.csv"
+
+# Model hyperparameters
+models:
+  decision_tree:
+    max_depth: 10
+    criterion: "gini"
+    random_state: 42
