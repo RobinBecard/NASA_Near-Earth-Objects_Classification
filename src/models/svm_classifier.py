@@ -1,3 +1,4 @@
+from typing import Literal
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.svm import SVC
 
@@ -43,7 +44,9 @@ class SVMClassifier(BaseEstimator, ClassifierMixin):
     
     """
     
-    def __init__(self, kernel='linear', C=1.0, probability=True, class_weight=None):
+    def __init__(self, kernel: Literal['linear', 'poly', 'rbf', 'sigmoid', 'precomputed'] = 'linear', C: float = 1.0, probability: bool = True, class_weight = None):
+        if C is None or C <= 0:
+            raise ValueError("Parameter C must be strictly positive, got {}.".format(C))
         self.kernel = kernel
         self.C = C
         self.probability = probability
