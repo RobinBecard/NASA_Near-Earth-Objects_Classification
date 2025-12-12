@@ -75,6 +75,7 @@ scikit-learn
 matplotlib
 seaborn
 jupyter
+pyyaml
 ```
 
 ### Installation
@@ -86,6 +87,23 @@ cd IFT712_Project
 
 # Installer les dépendances
 pip install -r requirements.txt
+```
+
+### Configuration
+
+Le projet utilise un système de configuration centralisé basé sur YAML. Tous les paramètres de configuration se trouvent dans le fichier `config.yaml` à la racine du projet.
+
+#### Accès rapide à la configuration
+
+```python
+from src.config import get_config
+
+# Obtenir l'instance de configuration
+config = get_config()
+
+# Accéder aux paramètres
+dataset_path = config.get_path('paths.dataset')
+test_size = config.get_param('preprocessing.test_size')
 ```
 
 ### Exécution
@@ -100,6 +118,7 @@ jupyter notebook notebooks/IFT712_Project.ipynb
 ```
 IFT712_Project/
 ├── README.md                          # Documentation principale du projet
+├── config.yaml                        # Fichier de configuration centralisé
 ├── .gitignore                         # Configuration Git
 ├── requirements.txt                   # Dépendances Python
 ├── setup.py                           # Configuration du projet Python
@@ -107,7 +126,7 @@ IFT712_Project/
 │
 ├── src/                               # Code source principal
 │   ├── __init__.py
-│   ├── config.py                      # Configuration globale et paramètres
+│   ├── config.py                      # ConfigManager - Gestion de la configuration
 │   ├── data/                          # Module de gestion des données
 │   │   ├── __init__.py
 │   │   ├── loader.py                  # Chargement des données
@@ -131,10 +150,10 @@ IFT712_Project/
 │       └── utils.py                 # Fonctions utilitaires
 │
 ├── notebooks/                         # Notebooks Jupyter
-│   ├── IFT712_Project.ipynb            # Notebook principal du projet
+│   └── IFT712_Project.ipynb           # Notebook principal du projet
 │
-├── datasets/                              # Répertoire de données
-│   ├── neo.csv                      # Jeu de données principal
+├── datasets/                          # Répertoire de données
+│   └── neo.csv                        # Jeu de données principal
 │
 ├── results/                           # Résultats et artefacts
 │   ├── models/                        # Modèles entraînés (sérialisés)
