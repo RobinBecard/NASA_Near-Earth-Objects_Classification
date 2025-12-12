@@ -116,10 +116,10 @@ IFT712_Project/
 │   │   ├── __init__.py
 │   │   ├── base_classifier.py         # Classe abstraite de base
 │   │   ├── svm_classifier.py          # Implémentation SVM
-│   │   ├── random_forest_classifier.py # Implémentation Random Forest
+│   │   ├── decision_tree_classifier.py  # Implémentation Decision Tree
 │   │   ├── neural_network_classifier.py # Implémentation Neural Network
 │   │   ├── knn_classifier.py          # Implémentation KNN
-│   │   ├── gradient_boosting_classifier.py # Implémentation Gradient Boosting
+│   │   ├── naive_bayes_classifier.py   # Implémentation Naive Bayes
 │   │   └── logistic_regression_classifier.py # Implémentation Logistic Regression
 │   ├── evaluation/                    # Module d'évaluation et comparaison
 │   │   ├── __init__.py
