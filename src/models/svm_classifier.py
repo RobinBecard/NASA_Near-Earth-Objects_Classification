@@ -41,17 +41,18 @@ class SVMClassifier(BaseModel):
         NOTE: This method strictly requires 2D feature data.
         """
         if self.model is None:
-            print("Error: Model not trained. Call train() first.")
-            return
+            raise RuntimeError("Model not trained. Call train() first.")
+
 
         X = np.array(X)
         y = np.array(y)
 
         # Strict dimension check
         if X.shape[1] != 2:
-            print(f"Cannot visualize SVM boundary with {X.shape[1]} dimensions.")
-            print("   -> Tip: Use PCA to reduce to 2D or select only 2 columns.")
-            return
+            raise ValueError(
+                f"Cannot visualize SVM boundary with {X.shape[1]} dimensions. "
+                "Tip: Use PCA to reduce to 2D or select only 2 columns."
+            )
 
         h = 0.02  # Step size
         x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
