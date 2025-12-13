@@ -24,6 +24,7 @@ models:
     max_depth: 5
     criterion: "gini"
     random_state: 42
+
   svm:
     kernel: "rbf"        # or 'linear', 'poly', etc.
     C: 1.0               # Must be > 0
@@ -32,3 +33,14 @@ models:
   
   naive_bayes:
     var_smoothing: 1e-9
+    
+  neural_network:
+    hidden_layer_sizes: [64, 32]
+    activation: "relu"            
+    solver: "adam"                
+    alpha: 0.0001                 
+    learning_rate_init: 0.001     
+    max_iter: 500                 
+    early_stopping: true          
+    random_state: 42
+  
