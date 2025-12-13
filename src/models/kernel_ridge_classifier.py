@@ -92,3 +92,4 @@ class KernelRidgeClassifier(BaseModel):
         plt.xlabel('Feature 1')
         plt.ylabel('Feature 2')
         plt.show()
+        plt.close()
