@@ -27,5 +27,5 @@ models:
   svm:
     kernel: "rbf"        # or 'linear', 'poly', etc.
     C: 1.0               # Must be > 0
-    probability: true    # NNecessary for AUC and predict_with_details
+    probability: true    # Necessary for AUC and predict_with_details
     class_weight: "balanced" # or null (write null without quotes in YAML for None)
