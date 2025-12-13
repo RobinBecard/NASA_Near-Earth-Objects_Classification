@@ -21,6 +21,6 @@ preprocessing:
 # Model hyperparameters
 models:
   decision_tree:
-    max_depth: 10
+    max_depth: 5
     criterion: "gini"
     random_state: 42

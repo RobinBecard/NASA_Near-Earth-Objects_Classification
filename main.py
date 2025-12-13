@@ -34,5 +34,47 @@ def main():
     preprocessor.display_normalization_stats()
 
 
+    ##################################################
+    ## EXAMPLE OF MODEL TRAINING WITH DECISION TREE ##
+    # STEP 3: MODEL TRAINING
+    print("\n[3] Training Decision Tree model...")
+    
+    model = DecisionTreeModel(
+        name="Decision Tree Classifier",
+        params={}  # Use default values from config.yaml
+    )
+    
+    model.train(X_train, y_train)
+    print("✓ Model trained successfully!")
+    
+    # STEP 4: EVALUATION
+    print("\n[4] Evaluating model...")
+    metrics = model.evaluate(X_test, y_test)
+    model.display_metrics(metrics)
+
+
+    #############################################################
+    ## EXAMPLE OF HYPERPARAMETER OPTIMIZATION WITH GRID SEARCH ##
+    # STEP 5: HYPERPARAMETER OPTIMIZATION
+    print("\n[5] Optimizing hyperparameters with Grid Search...")
+    param_grid = {
+        'max_depth': [5, 10, 15],
+        'criterion': ['gini', 'entropy']
+    }
+
+    best_params = model.optimize(X_train, y_train, param_grid)
+
+    print("✓ Hyperparameter optimization completed!")
+    print("Best Parameters found:")
+    for param, value in best_params.items():
+        print(f"  • {param}: {value}")
+    # Re-evaluate with optimized model
+    print("\nRe-evaluating optimized model...")
+    optimized_metrics = model.evaluate(X_test, y_test)
+    model.display_metrics(optimized_metrics)
+
+    print("\n" + "=" * 60)
+
+
 if __name__ == "__main__":
     main()
