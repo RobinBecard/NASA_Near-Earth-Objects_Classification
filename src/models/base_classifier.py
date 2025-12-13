@@ -121,7 +121,7 @@ class BaseModel(ABC):
             tuple: (predictions, probabilities)
         """
         predictions = self.predict(X)
-        probabilities = self.predict_proba(X) if hasattr(self.model, "predict_proba") else None
+        probabilities = self.model.predict_proba(X) if hasattr(self.model, "predict_proba") else None
         
         print(f"\n  Detailed predictions ({min(n_samples, len(predictions))} samples):")
         for i in range(min(n_samples, len(predictions))):
