@@ -67,9 +67,9 @@ class KernelRidgeClassifier(BaseModel):
         # 1. Create meshgrid
         h = 0.05 # Step size (larger than others to calculate faster)
         x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
-        y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+        x2_min, x2_max = X[:, 1].min() - 1, X[:, 1].max() + 1
         xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
-                             np.arange(y_min, y_max, h))
+                             np.arange(x2_min, x2_max, h))
 
         # 2. Predict raw values (Z is continuous here, not just 0/1)
         Z = self.model.predict(np.c_[xx.ravel(), yy.ravel()])
