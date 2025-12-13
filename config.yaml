@@ -56,4 +56,11 @@ kernel_ridge:
     max_iter: 500                 
     early_stopping: true          
     random_state: 42
+
+  kmeans:
+    n_clusters: 3         # The "K": number of expected groups. Adjust based on dataset.
+    init: "k-means++"     # Smart initialization of centers (faster/more stable).
+    n_init: 10            # Number of re-runs with different seeds to avoid local minima.
+    max_iter: 300         # Maximum iterations per run.
+    random_state: 42
   

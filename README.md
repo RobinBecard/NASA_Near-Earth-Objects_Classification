@@ -137,7 +137,7 @@ IFT712_Project/
 │   │   ├── svm_classifier.py          # Implémentation SVM
 │   │   ├── decision_tree_classifier.py  # Implémentation Decision Tree
 │   │   ├── neural_network_classifier.py # Implémentation Neural Network
-│   │   ├── knn_classifier.py          # Implémentation KNN
+│   │   ├── kmeans_classifier.py       # Implémentation K-Means
 │   │   ├── naive_bayes_classifier.py   # Implémentation Naive Bayes
 │   │   └── logistic_regression_classifier.py # Implémentation Logistic Regression
 │   ├── evaluation/                    # Module d'évaluation et comparaison
