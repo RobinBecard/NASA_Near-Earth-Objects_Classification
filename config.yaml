@@ -61,4 +61,5 @@ kernel_ridge:
     alpha: 1.0            # Regularization strength (1.0 is standard). Increase if overfitting.
     solver: "auto"        # Let sklearn choose the best mathematical solver.
     class_weight: null    # Set to "balanced" if your classes are imbalanced.
+    random_state: 42
   
