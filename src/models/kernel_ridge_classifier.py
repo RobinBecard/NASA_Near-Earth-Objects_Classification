@@ -86,7 +86,7 @@ class KernelRidgeClassifier(BaseModel):
         plt.contour(xx, yy, Z, levels=[0.5], colors='k', linestyles='-', linewidths=2)
 
         # 5. Plot data points
-        scatter = plt.scatter(X[:, 0], X[:, 1], c=y, cmap="RdBu_r", edgecolors='white', s=60)
+        plt.scatter(X[:, 0], X[:, 1], c=y, cmap="RdBu_r", edgecolors='white', s=60)
         
         plt.title(title)
         plt.xlabel('Feature 1')
