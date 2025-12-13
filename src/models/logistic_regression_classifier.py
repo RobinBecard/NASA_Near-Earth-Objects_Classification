@@ -3,7 +3,6 @@ from src.models.base_classifier import BaseModel
 from src.config import get_config
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 
 class LogisticRegressionClassifier(BaseModel):
     """
