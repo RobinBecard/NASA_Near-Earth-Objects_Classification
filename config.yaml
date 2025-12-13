@@ -29,3 +29,10 @@ models:
     C: 1.0               # Must be > 0
     probability: true    # Necessary for AUC and predict_with_details
     class_weight: "balanced" # or null (write null without quotes in YAML for None)
+
+  logistic_regression:
+    penalty: "l2"         # "l1" (lasso), "l2" (ridge), "elasticnet"
+    C: 1.0                # Inverse of regularization strength (1.0 = standard, 0.01 = strong)
+    solver: "lbfgs"       # "liblinear" (for small datasets/L1), "lbfgs" (standard)
+    max_iter: 1000        # Increase if the model does not converge
+    class_weight: null    # Set to "balanced" for imbalanced datasets
