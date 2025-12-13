@@ -30,6 +30,9 @@ models:
     C: 1.0               # Must be > 0
     probability: true    # Necessary for AUC and predict_with_details
     class_weight: "balanced" # or null (write null without quotes in YAML for None)
+  
+  naive_bayes:
+    var_smoothing: 1e-9
     
   neural_network:
     hidden_layer_sizes: [64, 32]
