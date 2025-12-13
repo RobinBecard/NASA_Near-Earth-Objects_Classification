@@ -1,6 +1,7 @@
 from sklearn.neural_network import MLPClassifier
 from src.models.base_classifier import BaseModel
 from src.config import get_config
+import matplotlib.pyplot as plt
 
 class NNClassifier(BaseModel):
     """
@@ -35,3 +36,25 @@ class NNClassifier(BaseModel):
             early_stopping=self.params.get('early_stopping', default_params.get('early_stopping', True)),
             random_state=self.params.get('random_state', default_params.get('random_state', 42))
         )
+    
+    def plot_learning_curve(self):
+        """
+        Plots the loss curve over iterations (epochs).
+        Useful to check convergence and potential overfitting.
+        """
+        if self.model is None:
+            print("Error: Model not trained.")
+            return
+
+        # The loss curve is only available for stochastic solvers (sgd, adam)
+        if hasattr(self.model, 'loss_curve_'):
+            plt.figure(figsize=(8, 5))
+            plt.plot(self.model.loss_curve_, label='Training Loss', color='blue')
+            plt.title(f"Learning Curve - {self.name}")
+            plt.xlabel('Iterations (Epochs)')
+            plt.ylabel('Loss')
+            plt.grid(True, linestyle='--', alpha=0.7)
+            plt.legend()
+            plt.show()
+        else:
+            print("Warning: Loss curve not available (solver 'lbfgs' does not generate it).")
