@@ -37,7 +37,7 @@ class NaiveBayesClassifier(BaseModel):
             feature_names (list): Names of the features for the legend.
         """
         if self.model is None:
-            print("Error: Model not trained.")
+            print("Error: Model has not been trained. Call train() before plotting distributions.")
             return
 
         # Check if the model has learned attributes (theta_ = means, var_ = variances)
