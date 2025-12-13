@@ -29,3 +29,4 @@ models:
     C: 1.0               # Must be > 0
     probability: true    # Necessary for AUC and predict_with_details
     class_weight: "balanced" # or null (write null without quotes in YAML for None)
+    mesh_step_size: 0.02 # Step size for decision boundary visualization mesh grid (smaller = higher resolution)

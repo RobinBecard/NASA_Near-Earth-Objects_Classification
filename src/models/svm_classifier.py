@@ -34,11 +34,18 @@ class SVMClassifier(BaseModel):
             random_state=self.params.get('random_state', default_params.get('random_state', 42))
         )
 
-    def plot_decision_boundary(self, X, y, title="SVM Decision Boundary"):
+    def plot_decision_boundary(self, X, y, title="SVM Decision Boundary", step_size=None):
         """
         Visualizes the decision boundary, margins, and support vectors.
         
         NOTE: This method strictly requires 2D feature data.
+        
+        Args:
+            X: Feature data (must be 2D)
+            y: Target labels
+            title: Plot title (default: "SVM Decision Boundary")
+            step_size: Mesh grid step size for visualization resolution (default: from config.yaml).
+                       Smaller values increase resolution but may slow down plotting.
         """
         if self.model is None:
             raise RuntimeError("Model not trained. Call train() first.")
@@ -54,7 +61,13 @@ class SVMClassifier(BaseModel):
                 "Tip: Use PCA to reduce to 2D or select only 2 columns."
             )
 
-        h = 0.02  # Step size
+        # Get step size from config if not provided
+        if step_size is None:
+            config = get_config()
+            default_params = config.get_param('models.svm', {})
+            step_size = default_params.get('mesh_step_size', 0.02)
+        
+        h = step_size  # Mesh grid step size for visualization resolution
         x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
         y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
         xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
