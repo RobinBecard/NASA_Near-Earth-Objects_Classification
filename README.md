@@ -46,12 +46,12 @@ Les données proviennent de sources institutionnelles majeures :
 
 Le projet implémente les six méthodes suivantes :
 
-1. **Support Vector Machines (SVM)**
-2. **Random Forest**
+1. **Vecteur à Support**
+2. **Arbre de Décision**
 3. **Réseaux de Neurones**
-4. **K-Nearest Neighbors (KNN)**
-5. **Gradient Boosting**
-6. **Logistic Regression**
+4. **Méthode des Moindres Carrés**
+5. **Bayes Naïf**
+6. **Régression Logistique**
 
 ## Métriques d'Évaluation
 
