@@ -14,7 +14,8 @@ class NEODataPreprocessor:
     """
     def __init__(
         self, 
-        numerical_features: Optional[List[str]] = None,
+        log_features: Optional[List[str]] = None,
+        other_features: Optional[List[str]] = None,
         target_column: Optional[str] = None,
         test_size: Optional[float] = None,
         random_state: Optional[int] = None,
@@ -24,7 +25,8 @@ class NEODataPreprocessor:
         Initialize the NEO Data Preprocessor.
 
         Args:
-            numerical_features (List[str] | None): List of numerical feature names to process.
+            log_features (List[str] | None): Features requiring log transformation (skewed distributions).
+            other_features (List[str] | None): Features requiring only scaling (no log transformation).
             target_column (str | None): Name of the target column (y).
             test_size (float | None): Proportion of the dataset to include in the test split.
             random_state (int | None): Random state for reproducibility.
@@ -33,21 +35,15 @@ class NEODataPreprocessor:
         config = get_config()
         
         # Features requiring Log transformation (skewed distributions)
-        self.log_features = config.get_param(
+        self.log_features = log_features if log_features is not None else config.get_param(
             'preprocessing.log_features',
             ['est_diameter_max', 'relative_velocity', 'miss_distance']
         )
         # Features requiring standard scaling only
-        self.other_features = config.get_param(
+        self.other_features = other_features if other_features is not None else config.get_param(
             'preprocessing.other_features',
             ['absolute_magnitude']
         )
-        
-        # Combine default features if not provided
-        if numerical_features is None:
-            self.numerical_features = self.log_features + self.other_features
-        else:
-            self.numerical_features = numerical_features
 
         self.target_column = target_column or config.get_param('preprocessing.target_column', 'hazardous')
         self.test_size = test_size if test_size is not None else config.get_param('preprocessing.test_size', 0.2)
@@ -166,8 +162,8 @@ class NEODataPreprocessor:
         return self.X_train, self.X_test, self.y_train, self.y_test
 
     def get_feature_names(self) -> List[str]:
-        """Return the list of processed features."""
-        return self.numerical_features.copy()
+        """Return the list of processed features in order: [log_features, other_features]."""
+        return self.log_features + self.other_features
 
     def get_split_summary(self) -> Dict:
         """Return a dictionary of split statistics."""
@@ -179,11 +175,13 @@ class NEODataPreprocessor:
             'n_features': self.X_train.shape[1],
             'train_stats': {
                 'min': float(self.X_train.min()), 'max': float(self.X_train.max()),
-                'mean': float(self.X_train.mean()), 'std': float(self.X_train.std())
+                'mean': float(self.X_train.mean()), 'std': float(self.X_train.std()),
+                'median': float(np.median(self.X_train))
             },
             'test_stats': {
                 'min': float(self.X_test.min()), 'max': float(self.X_test.max()),
-                'mean': float(self.X_test.mean()), 'std': float(self.X_test.std())
+                'mean': float(self.X_test.mean()), 'std': float(self.X_test.std()),
+                'median': float(np.median(self.X_test))
             }
         }
     
@@ -199,5 +197,5 @@ class NEODataPreprocessor:
         summary = self.get_split_summary()
         if not summary: return
         tr = summary['train_stats']
-        print(f"\nNormalization check (RobustScaler - Mean might not be 0 but Median is):")
-        print(f"  Train: mean={tr['mean']:.3f}, std={tr['std']:.3f}")
+        print(f"\nNormalization check (RobustScaler - Median centered around 0):")
+        print(f"  Train: median={tr['median']:.3f}, mean={tr['mean']:.3f}, std={tr['std']:.3f}")
