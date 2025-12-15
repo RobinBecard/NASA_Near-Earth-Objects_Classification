@@ -33,9 +33,15 @@ class NEODataPreprocessor:
         config = get_config()
         
         # Features requiring Log transformation (skewed distributions)
-        self.log_features = ['est_diameter_max', 'relative_velocity', 'miss_distance']
+        self.log_features = config.get_param(
+            'preprocessing.log_features',
+            ['est_diameter_max', 'relative_velocity', 'miss_distance']
+        )
         # Features requiring standard scaling only
-        self.other_features = ['absolute_magnitude']
+        self.other_features = config.get_param(
+            'preprocessing.other_features',
+            ['absolute_magnitude']
+        )
         
         # Combine default features if not provided
         if numerical_features is None:
