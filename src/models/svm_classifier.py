@@ -1,14 +1,13 @@
 from sklearn.svm import SVC
-from src.models.base_classifier import BaseClassifier
+from src.models.base_classifier import BaseModel
 from src.config import get_config
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-class SVMClassifier(BaseClassifier):
+class SVMClassifier(BaseModel):
     """
     Specific implementation for Support Vector Machine (SVM).
-    Inherits from BaseClassifier.
+    Inherits from BaseModel.
     """
 
     def _build_model(self):
@@ -23,30 +22,27 @@ class SVMClassifier(BaseClassifier):
             - random_state: Random state for reproducibility
         """
         config = get_config()
-
+        
         # Get default hyperparameters from config if not provided in self.params
         default_params = config.get_param('models.svm', {})
-
+        
         self.model = SVC(
-            kernel=self.params.get(
-                'kernel', default_params.get('kernel', 'linear')),
+            kernel=self.params.get('kernel', default_params.get('kernel', 'linear')),
             C=self.params.get('C', default_params.get('C', 1.0)),
-            probability=self.params.get(
-                'probability', default_params.get('probability', True)),
-            class_weight=self.params.get(
-                'class_weight', default_params.get('class_weight', None)),
-            random_state=self.params.get(
-                'random_state', default_params.get('random_state', 42))
+            probability=self.params.get('probability', default_params.get('probability', True)),
+            class_weight=self.params.get('class_weight', default_params.get('class_weight', None)),
+            random_state=self.params.get('random_state', default_params.get('random_state', 42))
         )
 
     def plot_decision_boundary(self, X, y, title="SVM Decision Boundary"):
         """
         Visualizes the decision boundary, margins, and support vectors.
-
+        
         NOTE: This method strictly requires 2D feature data.
         """
         if self.model is None:
             raise RuntimeError("Model not trained. Call train() first.")
+
 
         X = np.array(X)
         y = np.array(y)
@@ -70,23 +66,21 @@ class SVMClassifier(BaseClassifier):
         Z = self.model.decision_function(np.c_[xx.ravel(), yy.ravel()])
         Z = Z.reshape(xx.shape)
 
-        plt.contourf(xx, yy, Z, levels=[-100, 0, 100],
-                     alpha=0.2, colors=['#FF9999', '#9999FF'])
-
+        plt.contourf(xx, yy, Z, levels=[-100, 0, 100], alpha=0.2, colors=['#FF9999', '#9999FF'])
+        
         # Plot key lines:
         # Level -1 : Negative class margin (dashed)
         # Level  0 : Decision Boundary (solid)
         # Level  1 : Positive class margin (dashed)
-        contours = plt.contour(xx, yy, Z, levels=[-1, 0, 1],
-                               linestyles=['--', '-', '--'],
-                               colors='k',
+        contours = plt.contour(xx, yy, Z, levels=[-1, 0, 1], 
+                               linestyles=['--', '-', '--'], 
+                               colors='k', 
                                linewidths=[1, 2, 1])
-
+        
         plt.clabel(contours, inline=True, fontsize=10, fmt='%1.0f')
 
-        plt.scatter(X[:, 0], X[:, 1], c=y,
-                    cmap=plt.cm.bwr, edgecolors='k', s=60)
-
+        plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.bwr, edgecolors='k', s=60)
+        
         sv = self.model.support_vectors_
         plt.scatter(sv[:, 0], sv[:, 1], s=200,
                     linewidth=1.5, facecolors='none', edgecolors='k', label='Support Vectors')

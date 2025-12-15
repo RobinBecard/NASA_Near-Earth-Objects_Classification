@@ -1,18 +1,16 @@
 from abc import ABC, abstractmethod
 from sklearn.metrics import (
-    accuracy_score, precision_score, recall_score, f1_score,
+    accuracy_score, precision_score, recall_score, f1_score, 
     roc_auc_score, confusion_matrix
 )
 from sklearn.model_selection import GridSearchCV
 
-
-class BaseClassifier(ABC):
+class BaseModel(ABC):
     """
     Abstract base class for classification models.
     This class cannot be used directly. It serves as a template
     for concrete model implementations.
     """
-
     def __init__(self, name, params):
         """
         Initialize the base model.
@@ -47,7 +45,7 @@ class BaseClassifier(ABC):
         search.fit(X_train, y_train)
         self.model = search.best_estimator_
         return search.best_params_
-
+    
     def predict(self, X):
         return self.model.predict(X)
 
@@ -85,7 +83,7 @@ class BaseClassifier(ABC):
             "auc_roc": auc,
             "confusion_matrix": confusion_matrix(y_test, predictions).tolist()
         }
-
+    
     def display_metrics(self, metrics: dict) -> None:
         """
         Display formatted evaluation metrics.
@@ -99,17 +97,17 @@ class BaseClassifier(ABC):
         print(f"  • Precision: {metrics['precision']:.4f}")
         print(f"  • Recall:    {metrics['recall']:.4f}")
         print(f"  • F1-Score:  {metrics['f1_score']:.4f}")
-
+        
         if isinstance(metrics['auc_roc'], (int, float)):
             print(f"  • AUC-ROC:   {metrics['auc_roc']:.4f}")
         else:
             print(f"  • AUC-ROC:   {metrics['auc_roc']}")
-
+        
         print("\n  Confusion matrix:")
         cm = metrics['confusion_matrix']
         print(f"    [[TN={cm[0][0]}, FP={cm[0][1]}],")
         print(f"     [FN={cm[1][0]}, TP={cm[1][1]}]]")
-
+    
     def predict_with_details(self, X, y_true=None, n_samples: int = 5):
         """
         Make predictions and display detailed results.
@@ -123,27 +121,23 @@ class BaseClassifier(ABC):
             tuple: (predictions, probabilities)
         """
         predictions = self.predict(X)
-        probabilities = self.model.predict_proba(X) if hasattr(
-            self.model, "predict_proba") else None
-
-        print(
-            f"\n  Detailed predictions ({min(n_samples, len(predictions))} samples):")
+        probabilities = self.model.predict_proba(X) if hasattr(self.model, "predict_proba") else None
+        
+        print(f"\n  Detailed predictions ({min(n_samples, len(predictions))} samples):")
         for i in range(min(n_samples, len(predictions))):
             pred = predictions[i]
-
+            
             result_line = f"    Sample {i+1}: Predicted={pred}"
-
+            
             if probabilities is not None:
                 proba = probabilities[i][1]  # Positive class probability
                 result_line += f", Proba={proba:.3f}"
-
+            
             if y_true is not None:
-                true_label = y_true.iloc[i] if hasattr(
-                    y_true, 'iloc') else y_true[i]
+                true_label = y_true.iloc[i] if hasattr(y_true, 'iloc') else y_true[i]
                 status = "✓" if pred == true_label else "✗"
-                result_line = f"    {status} " + \
-                    result_line[4:] + f", True={true_label}"
-
+                result_line = f"    {status} " + result_line[4:] + f", True={true_label}"
+            
             print(result_line)
-
+        
         return predictions, probabilities
