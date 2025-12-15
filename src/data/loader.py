@@ -7,6 +7,7 @@ class NEODataLoader:
     """
     Class responsible for loading the NASA NEO dataset.
     """
+
     def __init__(self, path: Path | None = None):
         """
         Initialize the NEO Data Loader.
@@ -17,10 +18,10 @@ class NEODataLoader:
         if path is None:
             config = get_config()
             path = config.get_path('paths.dataset')
-        
+
         self.path = path
-        self._data = None # "_" indicates a private attribute
-    
+        self._data = None  # "_" indicates a private attribute
+
     def load(self) -> pd.DataFrame:
         """
         Load the NEO dataset from the configured path.
@@ -30,8 +31,8 @@ class NEODataLoader:
         """
         self._data = pd.read_csv(self.path)
         return self._data
-    
-    @property # Access as an attribute
+
+    @property  # Access as an attribute
     def data(self) -> pd.DataFrame:
         """
         Get the loaded data. If not loaded yet, load it automatically.
@@ -42,7 +43,7 @@ class NEODataLoader:
         if self._data is None:
             self.load()
         return self._data
-    
+
     def reload(self) -> pd.DataFrame:
         """
         Reload the dataset from the source file.
@@ -51,7 +52,7 @@ class NEODataLoader:
             pd.DataFrame: Reloaded NEO dataset.
         """
         return self.load()
-    
+
     def get_summary(self) -> dict:
         """
         Get a summary of the loaded dataset.
@@ -61,14 +62,15 @@ class NEODataLoader:
         """
         if self._data is None:
             self.load()
-        
+
         return {
             'n_rows': self._data.shape[0],
             'n_columns': self._data.shape[1],
             'columns': list(self._data.columns),
-            'memory_usage': self._data.memory_usage(deep=True).sum() / 1024**2  # MB
+            # MB
+            'memory_usage': self._data.memory_usage(deep=True).sum() / 1024**2
         }
-    
+
     def display_summary(self, target_column: str = 'hazardous') -> None:
         """
         Display a formatted summary of the dataset.
@@ -77,10 +79,12 @@ class NEODataLoader:
             target_column (str): Name of the target column to show distribution.
         """
         summary = self.get_summary()
-        print(f"✓ Data loaded: {summary['n_rows']} rows, {summary['n_columns']} columns")
+        print(
+            f"✓ Data loaded: {summary['n_rows']} rows, {summary['n_columns']} columns")
         print(f"  - Columns: {summary['columns']}")
         print(f"  - Memory usage: {summary['memory_usage']:.2f} MB")
-        
+
         if target_column in self._data.columns:
             print(f"  - Distribution of '{target_column}':")
-            print(self._data[target_column].value_counts().to_string(header=False).replace('\n', '\n    '))
+            print(self._data[target_column].value_counts().to_string(
+                header=False).replace('\n', '\n    '))
