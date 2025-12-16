@@ -5,6 +5,11 @@
 paths:
   dataset: "datasets/neo.csv"
 
+# Model comparison configuration
+model_comparison:
+  plot_n_cols: 4  # Number of columns in comparison plot grid
+  plot_figsize: [20, 12]  # Figure size [width, height] in inches
+
 # Data preprocessing configuration
 preprocessing:
   numerical_features:
@@ -41,7 +46,7 @@ models:
     random_state: 42
   
   naive_bayes:
-    var_smoothing: 1e-9
+    var_smoothing: 0.000000001  # 1e-9 in decimal notation
     
   neural_network:
     hidden_layer_sizes: [64, 32]
