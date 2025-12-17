@@ -52,6 +52,9 @@ def main():
     metrics = model.evaluate(X_test, y_test)
     model.display_metrics(metrics)
 
+# Visualization step
+    print("\n[Visualization] Generating t-SNE comparison...")
+    model.plot_tsne_comparison(X_test, y_test, n_samples=1000)
 
     #############################################################
     ## EXAMPLE OF HYPERPARAMETER OPTIMIZATION WITH GRID SEARCH ##
