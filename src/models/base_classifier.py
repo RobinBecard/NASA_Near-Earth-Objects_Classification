@@ -173,7 +173,7 @@ class BaseModel(ABC):
             y_pred = self.predict(X_sample)
 
             # Compute t-SNE
-            print(f"--> Computing t-SNE on {len(X_sample)} samples...")
+            print(f"--> Computing t-SNE on {len(X_sample)} samples")
             tsne = TSNE(n_components=2, random_state=42, init='random', learning_rate='auto')
             X_embedded = tsne.fit_transform(X_sample)
 
