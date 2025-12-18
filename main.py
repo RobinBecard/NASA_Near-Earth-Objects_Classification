@@ -2,12 +2,12 @@
 Main script demonstrating the complete ML pipeline:
 1. Load data with NEODataLoader
 2. Preprocess with NEODataPreprocessor (fit_transform vs transform)
-3. Train a Decision Tree model
+3. Train a Logistic Regression model
 """
 
 from src.data.loader import NEODataLoader
 from src.data.preprocessor import NEODataPreprocessor
-from src.models.tree_decision_classifier import DecisionTreeModel
+from src.models.logistic_regression_classifier import LogisticRegressionClassifier
 from src.config import get_config
 
 
@@ -22,47 +22,48 @@ def main():
     print("\n[1] Loading data...")
     loader = NEODataLoader()
     df = loader.data
-    loader.display_summary(target_column=config.get_param('preprocessing.target_column', 'hazardous'))
-    
+    loader.display_summary(target_column=config.get_param(
+        'preprocessing.target_column', 'hazardous'))
+
     # STEP 2: PREPROCESSING
     print("\n[2] Preprocessing data...")
     preprocessor = NEODataPreprocessor()
     X_train, X_test, y_train, y_test = preprocessor.preprocess(df)
-    
+
     # Use display methods
     preprocessor.display_split_info()
     preprocessor.display_normalization_stats()
 
-
     ##################################################
-    ## EXAMPLE OF MODEL TRAINING WITH DECISION TREE ##
+    ## EXAMPLE OF MODEL TRAINING WITH LOGISTIC REGRESSION ##
     # STEP 3: MODEL TRAINING
-    print("\n[3] Training Decision Tree model...")
-    
-    model = DecisionTreeModel(
-        name="Decision Tree Classifier",
+    print("\n[3] Training Logistic Regression model...")
+
+    model = LogisticRegressionClassifier(
+        name="Logistic Regression Classifier",
         params={}  # Use default values from config.yaml
     )
-    
+
     model.train(X_train, y_train)
     print("✓ Model trained successfully!")
-    
+
     # STEP 4: EVALUATION
     print("\n[4] Evaluating model...")
     metrics = model.evaluate(X_test, y_test)
     model.display_metrics(metrics)
 
-# Visualization step
+    # Visualization step
     print("\n[Visualization] Generating t-SNE comparison...")
-    model.plot_tsne_comparison(X_test, y_test, n_samples=1000)
+    model.plot_tsne_comparison(X_test, y_test)
 
     #############################################################
     ## EXAMPLE OF HYPERPARAMETER OPTIMIZATION WITH GRID SEARCH ##
     # STEP 5: HYPERPARAMETER OPTIMIZATION
     print("\n[5] Optimizing hyperparameters with Grid Search...")
     param_grid = {
-        'max_depth': [5, 10, 15],
-        'criterion': ['gini', 'entropy']
+        'C': [0.1, 1.0, 10.0],
+        'penalty': ['l2'],
+        'solver': ['lbfgs', 'liblinear']
     }
 
     best_params = model.optimize(X_train, y_train, param_grid)
