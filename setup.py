@@ -8,10 +8,9 @@ setup(
         "pandas",
         "numpy",
         "scikit-learn"
-    ],           
+    ],
     packages=find_packages("src"),
     author="Robin BECARD, Adrien SKRZYPCZAK, Cédric HAN",
     author_email="robinbecard@gmail.com, auteur1@example.com, auteur2@example.com",
     description="A project for IFT712, including machine learning components.",
 )
-
