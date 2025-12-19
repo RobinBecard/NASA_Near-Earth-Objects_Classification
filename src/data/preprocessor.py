@@ -73,6 +73,20 @@ class NEODataPreprocessor:
             ('scaler', RobustScaler()) 
         ])
 
+        other_pipeline = Pipeline([
+            ('scaler', RobustScaler())
+        ])
+
+        preprocessor = ColumnTransformer(
+            transformers=[
+                ('log_path', log_pipeline, self.log_features),
+                ('other_path', other_pipeline, self.other_features)
+            ],
+            remainder='drop' # ou 'passthrough' selon votre besoin
+        )
+        
+        return preprocessor 
+
     def split_data(self, df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
         """
         Split the dataset into training and testing sets.
