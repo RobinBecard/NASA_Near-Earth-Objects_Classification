@@ -67,7 +67,6 @@ class NEODataPreprocessor:
         
         Note: We use RobustScaler instead of StandardScaler to handle outliers better.
         """
-        # Pipeline for skewed features: Log -> RobustScaler
         log_pipeline = Pipeline([
             ('log', FunctionTransformer(np.log1p, validate=False)),
             ('scaler', RobustScaler()) 
@@ -82,7 +81,7 @@ class NEODataPreprocessor:
                 ('log_path', log_pipeline, self.log_features),
                 ('other_path', other_pipeline, self.other_features)
             ],
-            remainder='drop' # ou 'passthrough' selon votre besoin
+            remainder='drop'
         )
         
         return preprocessor 
