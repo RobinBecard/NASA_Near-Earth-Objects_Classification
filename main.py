@@ -2,14 +2,14 @@
 Main script demonstrating the complete ML pipeline:
 1. Load data with NEODataLoader
 2. Preprocess with NEODataPreprocessor (fit_transform vs transform)
-3. Train a Decision Tree model
+3. Train a Logistic Regression model
 """
 
 from src.data.loader import NEODataLoader
 from src.data.preprocessor import NEODataPreprocessor
-from src.models.tree_decision_classifier import DecisionTreeModel
 from src.data.loader import NEODataLoader
 from src.utils.model_comparison import ModelManager
+from src.models.tree_decision_classifier import DecisionTreeClassifier
 from src.config import get_config
 
 
@@ -41,7 +41,7 @@ def main():
     # # STEP 3: MODEL TRAINING
     # print("\n[3] Training Decision Tree model...")
 
-    # model = DecisionTreeModel(
+    # model = DecisionTreeClassifier(
     #     name="Decision Tree Classifier",
     #     params={}  # Use default values from config.yaml
     # )

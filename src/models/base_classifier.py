@@ -4,9 +4,14 @@ from sklearn.metrics import (
     roc_auc_score, confusion_matrix
 )
 from sklearn.model_selection import GridSearchCV
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+from sklearn.manifold import TSNE
 
 
-class BaseModel(ABC):
+
+class BaseClassifier(ABC):
     """
     Abstract base class for classification models.
     This class cannot be used directly. It serves as a template
@@ -164,3 +169,74 @@ class BaseModel(ABC):
             print(result_line)
 
         return predictions, probabilities
+
+    def plot_tsne_comparison(self, X_test, y_test, n_samples=None):
+        """
+        Generate a side-by-side 2D t-SNE visualization.
+        Right plot highlights prediction errors in red.
+
+        Args:
+            X_test: Test features.
+            y_test: True labels.
+            n_samples (int): Number of samples to use for t-SNE. If None, use all data.
+        """
+        # Prepare data
+        X_arr = np.array(X_test)
+        y_arr = np.array(y_test)
+
+        # Sampling (only if n_samples is specified)
+        if n_samples is not None and len(X_arr) > n_samples:
+            indices = np.random.choice(len(X_arr), n_samples, replace=False)
+            X_sample = X_arr[indices]
+            y_sample = y_arr[indices]
+        else:
+            X_sample = X_arr
+            y_sample = y_arr
+
+        # Predict
+        y_pred = self.predict(X_sample)
+
+        # Compute t-SNE
+        print(f"--> Computing t-SNE on {len(X_sample)} samples...")
+        tsne = TSNE(n_components=2, random_state=42,
+                    init='random', learning_rate='auto')
+        X_embedded = tsne.fit_transform(X_sample)
+
+        # Plotting
+        fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+        fig.suptitle(
+            f't-SNE Visualization - {self.name}', fontsize=16, fontweight='bold')
+
+        # 1. Ground Truth
+        sns.scatterplot(
+            x=X_embedded[:, 0], y=X_embedded[:, 1],
+            hue=y_sample, palette='viridis', ax=axes[0], s=50
+        )
+        axes[0].set_title("Ground Truth")
+        axes[0].set_xlabel("t-SNE Component 1")
+        axes[0].set_ylabel("t-SNE Component 2")
+
+        # 2. Predictions
+        sns.scatterplot(
+            x=X_embedded[:, 0], y=X_embedded[:, 1],
+            hue=y_pred, palette='viridis', ax=axes[1], s=50
+        )
+
+        # Highlight errors in red
+        errors = (y_sample != y_pred)
+        if np.any(errors):
+            n_errors = np.sum(errors)
+            error_pct = (n_errors / len(y_sample)) * 100
+            axes[1].scatter(
+                X_embedded[errors, 0], X_embedded[errors, 1],
+                facecolors='none', edgecolors='red', s=100, linewidth=1.2, linestyle='-',
+                label=f'Errors: {n_errors} ({error_pct:.1f}%)'
+            )
+            axes[1].legend()
+
+        axes[1].set_title(f"Predictions ({self.name})")
+        axes[1].set_xlabel("t-SNE Component 1")
+        axes[1].set_ylabel("t-SNE Component 2")
+
+        plt.tight_layout()
+        plt.show()
