@@ -9,7 +9,7 @@ from src.data.loader import NEODataLoader
 from src.data.preprocessor import NEODataPreprocessor
 from src.models.tree_decision_classifier import DecisionTreeModel
 from src.data.loader import NEODataLoader
-from src.utils.model_comparison import ModelComparator
+from src.utils.model_comparison import ModelManager
 from src.config import get_config
 
 
@@ -81,8 +81,8 @@ def main():
     loader.display_summary()
 
     # Run full comparison
-    comparator = ModelComparator()
-    comparator.run_full_comparison(
+    manager = ModelManager()
+    manager.run_full_comparison(
         df=loader.data,
         n_runs=3,
         save_plot="results/model_comparison.png"
