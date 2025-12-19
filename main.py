@@ -7,7 +7,7 @@ Main script demonstrating the complete ML pipeline:
 
 from src.data.loader import NEODataLoader
 from src.data.preprocessor import NEODataPreprocessor
-from src.models.logistic_regression_classifier import LogisticRegressionClassifier
+from src.models.tree_decision_classifier import DecisionTreeClassifier
 from src.config import get_config
 
 
@@ -37,10 +37,10 @@ def main():
     ##################################################
     ## EXAMPLE OF MODEL TRAINING WITH LOGISTIC REGRESSION ##
     # STEP 3: MODEL TRAINING
-    print("\n[3] Training Logistic Regression model...")
+    print("\n[3] Training Decision Tree model...")
 
-    model = LogisticRegressionClassifier(
-        name="Logistic Regression Classifier",
+    model = DecisionTreeClassifier(
+        name="Decision Tree Classifier",
         params={}  # Use default values from config.yaml
     )
 

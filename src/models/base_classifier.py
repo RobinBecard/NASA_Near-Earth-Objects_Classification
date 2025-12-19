@@ -10,7 +10,8 @@ import numpy as np
 from sklearn.manifold import TSNE
 
 
-class BaseModel(ABC):
+
+class BaseClassifier(ABC):
     """
     Abstract base class for classification models.
     This class cannot be used directly. It serves as a template
