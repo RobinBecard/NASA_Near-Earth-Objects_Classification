@@ -1,4 +1,9 @@
-matplotlib
-seaborn
-jupyter
-pyyaml
+numpy>=1.21.0
+pandas>=1.3.0
+scikit-learn>=1.0.0
+matplotlib>=3.4.0
+seaborn>=0.11.0
+jupyter>=1.0.0
+ipython>=7.0.0
+pyyaml>=5.4.0
+psutil>=5.8.0

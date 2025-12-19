@@ -1,0 +1,50 @@
+# Optimization grids for hyperparameter tuning
+# Each model has a param_grid defining the search space for GridSearchCV
+
+# Configuration for the optimization process
+optimization_config:
+  cv_folds: 5           # Number of cross-validation folds
+  scoring: "accuracy"   # Scoring metric for optimization
+  n_jobs: -1            # Use all available CPU cores (-1)
+  verbose: 1            # Verbosity level
+
+# Parameter grids for each model
+param_grids:
+  
+  decision_tree:
+    max_depth: [3, 5, 10, 15, 20, null]  # null = no limit
+    criterion: ["gini", "entropy"]
+    min_samples_split: [2, 5, 10, 20]
+    min_samples_leaf: [1, 2, 4, 8]
+    max_features: ["sqrt", "log2", null]
+  
+  svm:
+    kernel: ["linear", "rbf", "poly"]
+    C: [0.01, 0.1, 1.0, 10.0, 100.0]
+    gamma: ["scale", "auto", 0.001, 0.01, 0.1]
+    degree: [2, 3, 4]  # Only for poly kernel
+    class_weight: [null, "balanced"]
+  
+  logistic_regression:
+    C: [0.001, 0.01, 0.1, 1.0, 10.0, 100.0]
+    penalty: ["l1", "l2"]
+    solver: ["liblinear", "saga"]  # Both support l1 and l2
+    max_iter: [500, 1000, 2000]
+    class_weight: [null, "balanced"]
+  
+  naive_bayes:
+    var_smoothing: [0.0000000001, 0.000000001, 0.00000001, 0.0000001, 0.000001, 0.00001]
+  
+  neural_network:
+    hidden_layer_sizes: [[32], [64], [128], [64, 32], [128, 64], [128, 64, 32]]
+    activation: ["relu", "tanh", "logistic"]
+    solver: ["adam", "sgd"]
+    alpha: [0.0001, 0.001, 0.01]
+    learning_rate_init: [0.0001, 0.001, 0.01]
+    max_iter: [500, 1000]
+    early_stopping: [true]
+  
+  least_squares:
+    alpha: [0.001, 0.01, 0.1, 1.0, 10.0, 100.0]
+    solver: ["auto", "svd", "cholesky", "lsqr"]
+    class_weight: [null, "balanced"]

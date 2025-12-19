@@ -46,10 +46,27 @@ class BaseClassifier(ABC):
             self._build_model()
         self.model.fit(X_train, y_train)
 
-    def optimize(self, X_train, y_train, param_grid):
+    def optimize(self, X_train, y_train, param_grid, cv=3, scoring='accuracy', n_jobs=-1, verbose=0):
         """Hyperparameter search using GridSearchCV."""
-        search = GridSearchCV(self.model, param_grid, cv=5, scoring='accuracy')
+        if self.model is None:
+            self._build_model()
+
+        print(
+            f"Building GridSearchCV with cv={cv}, scoring={scoring}, n_jobs={n_jobs}, verbose={verbose}")
+        print(f"Training data shape: {X_train.shape}")
+
+        search = GridSearchCV(
+            self.model,
+            param_grid,
+            cv=cv,
+            scoring=scoring,
+            n_jobs=n_jobs,
+            verbose=verbose
+        )
         search.fit(X_train, y_train)
+
+        print(f"Best score: {search.best_score_:.4f}")
+
         self.model = search.best_estimator_
         return search.best_params_
 
