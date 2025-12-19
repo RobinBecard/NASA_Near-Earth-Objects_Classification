@@ -6,7 +6,7 @@ import psutil
 import os
 from IPython.display import display, Markdown
 
-from src.models.tree_decision_classifier import DecisionTreeModel
+from src.models.tree_decision_classifier import DecisionTreeClassifier
 from src.models.svm_classifier import SVMClassifier
 from src.models.logistic_regression_classifier import LogisticRegressionClassifier
 from src.models.naive_bayes_classifier import NaiveBayesClassifier
@@ -87,7 +87,7 @@ class ModelManager:
         Add all default models with their default configurations.
         """
         default_models = [
-            DecisionTreeModel(name="Decision Tree", params={}),
+            DecisionTreeClassifier(name="Decision Tree", params={}),
             SVMClassifier(name="SVM", params={}),
             LogisticRegressionClassifier(
                 name="Logistic Regression", params={}),
