@@ -67,11 +67,24 @@ class NEODataPreprocessor:
         
         Note: We use RobustScaler instead of StandardScaler to handle outliers better.
         """
-        # Pipeline for skewed features: Log -> RobustScaler
         log_pipeline = Pipeline([
             ('log', FunctionTransformer(np.log1p, validate=False)),
             ('scaler', RobustScaler()) 
         ])
+
+        other_pipeline = Pipeline([
+            ('scaler', RobustScaler())
+        ])
+
+        preprocessor = ColumnTransformer(
+            transformers=[
+                ('log_path', log_pipeline, self.log_features),
+                ('other_path', other_pipeline, self.other_features)
+            ],
+            remainder='drop'
+        )
+        
+        return preprocessor 
 
     def split_data(self, df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
         """
