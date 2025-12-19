@@ -10,7 +10,6 @@ import numpy as np
 from sklearn.manifold import TSNE
 
 
-
 class BaseClassifier(ABC):
     """
     Abstract base class for classification models.
@@ -46,10 +45,30 @@ class BaseClassifier(ABC):
             self._build_model()
         self.model.fit(X_train, y_train)
 
-    def optimize(self, X_train, y_train, param_grid, cv=3, scoring='accuracy', n_jobs=-1, verbose=0):
-        """Hyperparameter search using GridSearchCV."""
+    def optimize(self, X_train, y_train, param_grid, cv=3, scoring='roc_auc', n_jobs=-1, verbose=0):
+        """
+        Hyperparameter search using GridSearchCV.
+
+        Args:
+            X_train: Training features.
+            y_train: Training labels.
+            param_grid: Dictionary of hyperparameters to search.
+            cv: Number of cross-validation folds.
+            scoring: Scoring metric ('roc_auc' by default, falls back to 'f1' if predict_proba not available).
+            n_jobs: Number of parallel jobs (-1 uses all cores).
+            verbose: Verbosity level.
+
+        Returns:
+            dict: Best parameters found by GridSearchCV.
+        """
         if self.model is None:
             self._build_model()
+
+        # Check if model supports predict_proba for roc_auc
+        if scoring == 'roc_auc' and not hasattr(self.model, 'predict_proba'):
+            print(
+                f"⚠️  Model {self.name} doesn't support predict_proba, using 'f1' instead of 'roc_auc'")
+            scoring = 'f1'
 
         print(
             f"Building GridSearchCV with cv={cv}, scoring={scoring}, n_jobs={n_jobs}, verbose={verbose}")
