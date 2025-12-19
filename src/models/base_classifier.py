@@ -3,7 +3,7 @@ from sklearn.metrics import (
     accuracy_score, precision_score, recall_score, f1_score,
     roc_auc_score, confusion_matrix
 )
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
@@ -45,9 +45,9 @@ class BaseClassifier(ABC):
             self._build_model()
         self.model.fit(X_train, y_train)
 
-    def optimize(self, X_train, y_train, param_grid, cv=3, scoring='roc_auc', n_jobs=-1, verbose=0):
+    def optimize(self, X_train, y_train, param_grid, cv=3, scoring='roc_auc', n_jobs=-1, verbose=0, search_method='grid', n_iter=10):
         """
-        Hyperparameter search using GridSearchCV.
+        Hyperparameter search using GridSearchCV or RandomizedSearchCV.
 
         Args:
             X_train: Training features.
@@ -57,31 +57,54 @@ class BaseClassifier(ABC):
             scoring: Scoring metric ('roc_auc' by default, falls back to 'f1' if predict_proba not available).
             n_jobs: Number of parallel jobs (-1 uses all cores).
             verbose: Verbosity level.
+            search_method: 'grid' for GridSearchCV or 'random' for RandomizedSearchCV.
+            n_iter: Number of iterations for RandomizedSearchCV (ignored for GridSearchCV).
 
         Returns:
-            dict: Best parameters found by GridSearchCV.
+            dict: Best parameters found by the search.
         """
         if self.model is None:
             self._build_model()
 
-        # Check if model supports predict_proba for roc_auc
         if scoring == 'roc_auc' and not hasattr(self.model, 'predict_proba'):
             print(
-                f"⚠️  Model {self.name} doesn't support predict_proba, using 'f1' instead of 'roc_auc'")
+                f"Model {self.name} doesn't support predict_proba, using 'f1' instead of 'roc_auc'")
             scoring = 'f1'
 
-        print(
-            f"Building GridSearchCV with cv={cv}, scoring={scoring}, n_jobs={n_jobs}, verbose={verbose}")
-        print(f"Training data shape: {X_train.shape}")
+        if search_method == 'random':
+            from itertools import product
+            total_combinations = 1
+            for param_values in param_grid.values():
+                total_combinations *= len(param_values)
 
-        search = GridSearchCV(
-            self.model,
-            param_grid,
-            cv=cv,
-            scoring=scoring,
-            n_jobs=n_jobs,
-            verbose=verbose
-        )
+            print(
+                f"Building RandomizedSearchCV with n_iter={n_iter}/{total_combinations}, cv={cv}, scoring={scoring}")
+            print(f"Training data shape: {X_train.shape}")
+
+            search = RandomizedSearchCV(
+                self.model,
+                param_grid,
+                n_iter=n_iter,
+                cv=cv,
+                scoring=scoring,
+                n_jobs=n_jobs,
+                verbose=verbose,
+                random_state=42
+            )
+        else:
+            print(
+                f"Building GridSearchCV with cv={cv}, scoring={scoring}, n_jobs={n_jobs}, verbose={verbose}")
+            print(f"Training data shape: {X_train.shape}")
+
+            search = GridSearchCV(
+                self.model,
+                param_grid,
+                cv=cv,
+                scoring=scoring,
+                n_jobs=n_jobs,
+                verbose=verbose
+            )
+
         search.fit(X_train, y_train)
 
         print(f"Best score: {search.best_score_:.4f}")

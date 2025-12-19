@@ -1,8 +1,22 @@
 optimization_config:
-  cv_folds: 5
+  cv_folds: 3
   scoring: "roc_auc"
   n_jobs: -1
   verbose: 1
+  
+  search_strategies:
+    decision_tree: "grid"
+    logistic_regression: "grid"
+    naive_bayes: "grid"
+    least_squares: "grid"
+    svm: "random"
+    neural_network: "grid"
+
+  random_search_iterations:
+    svm: 20
+  
+  sample_sizes:
+    svm: 0.5
 
 param_grids:
   
@@ -15,9 +29,9 @@ param_grids:
     class_weight: ["balanced"]
   
   svm:
-    kernel: ["linear", "rbf"]
+    kernel: ["rbf"]  # Reduced for speed
     C: [0.1, 1.0, 10.0, 100.0]
-    gamma: ["scale", 0.001, 0.01, 0.1]
+    gamma: ["scale", 0.01]  # Reduced from 4 to 2 values
     class_weight: ["balanced"]
   
   logistic_regression:
