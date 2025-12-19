@@ -18,6 +18,7 @@ class SVMClassifier(BaseClassifier):
         Hyperparameters:
             - kernel: Specifies the kernel type ('linear', 'poly', 'rbf', 'sigmoid')
             - C: Regularization parameter (must be strictly positive)
+            - gamma: Kernel coefficient for 'rbf', 'poly' and 'sigmoid'
             - probability: Whether to enable probability estimates (Required for AUC)
             - class_weight: Set to 'balanced' to handle imbalanced datasets
             - random_state: Random state for reproducibility
@@ -31,6 +32,8 @@ class SVMClassifier(BaseClassifier):
             kernel=self.params.get(
                 'kernel', default_params.get('kernel', 'linear')),
             C=self.params.get('C', default_params.get('C', 1.0)),
+            gamma=self.params.get(
+                'gamma', default_params.get('gamma', 'scale')),
             probability=self.params.get(
                 'probability', default_params.get('probability', True)),
             class_weight=self.params.get(
