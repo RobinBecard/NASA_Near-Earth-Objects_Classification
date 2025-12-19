@@ -32,41 +32,46 @@ preprocessing:
 # Model hyperparameters
 models:
   decision_tree:
-    max_depth: 5
+    class_weight: "balanced"
     criterion: "gini"
+    max_depth: 20
+    max_features: "sqrt"
+    min_samples_leaf: 25
+    min_samples_split: 500
     random_state: 42
 
   svm:
-    kernel: "rbf"        # or 'linear', 'poly', etc.
-    C: 1.0               # Must be > 0
-    probability: true    # Necessary for AUC and predict_with_details
-    class_weight: "balanced" # or null (write null without quotes in YAML for None)
+    kernel: "rbf"
+    C: 1.0
+    gamma: "scale"
+    probability: true
+    class_weight: "balanced"
     random_state: 42
 
   logistic_regression:
-    penalty: "l2"         # "l1" (lasso), "l2" (ridge), "elasticnet"
-    C: 1.0                # Inverse of regularization strength (1.0 = standard, 0.01 = strong)
-    solver: "lbfgs"       # "liblinear" (for small datasets/L1), "lbfgs" (standard)
-    max_iter: 1000        # Increase if the model does not converge
-    class_weight: "balanced"   # Set to "balanced" for imbalanced datasets
+    C: 100.0
+    class_weight: "balanced"
+    max_iter: 1000
+    penalty: "l1"
+    solver: "saga"
     random_state: 42
   
   naive_bayes:
-    var_smoothing: 0.000000001  # 1e-9 in decimal notation
+    var_smoothing: 0.0000000001 # 10^-10
     
   neural_network:
-    hidden_layer_sizes: [64, 32]
-    activation: "relu"            
-    solver: "adam"                
-    alpha: 0.0001                 
-    learning_rate_init: 0.001     
-    max_iter: 500                 
-    early_stopping: true          
+    activation: "relu"
+    alpha: 0.001
+    early_stopping: true
+    hidden_layer_sizes: [32]
+    learning_rate_init: 0.001
+    max_iter: 1000
+    solver: "adam"
     random_state: 42
 
   least_squares:
-    alpha: 1.0            # Regularization strength (1.0 is standard). Increase if overfitting.
-    solver: "auto"        # Let sklearn choose the best mathematical solver.
+    alpha: 100.0
     class_weight: "balanced"
+    solver: "auto"
     random_state: 42
   
