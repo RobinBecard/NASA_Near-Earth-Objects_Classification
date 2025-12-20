@@ -6,7 +6,7 @@ import psutil
 import os
 from IPython.display import display, Markdown
 
-from src.models.tree_decision_classifier import DecisionTreeModel
+from src.models.tree_decision_classifier import DecisionTreeClassifier
 from src.models.svm_classifier import SVMClassifier
 from src.models.logistic_regression_classifier import LogisticRegressionClassifier
 from src.models.naive_bayes_classifier import NaiveBayesClassifier
@@ -87,7 +87,7 @@ class ModelManager:
         Add all default models with their default configurations.
         """
         default_models = [
-            DecisionTreeModel(name="Decision Tree", params={}),
+            DecisionTreeClassifier(name="Decision Tree", params={}),
             SVMClassifier(name="SVM", params={}),
             LogisticRegressionClassifier(
                 name="Logistic Regression", params={}),
@@ -607,3 +607,36 @@ class ModelManager:
         if model_name is None:
             return self.optimized_params
         return self.optimized_params.get(model_name, None)
+    
+    def run_complete_pipeline(self, X_train, y_train, X_test, y_test, optimize=True):
+        """
+        Execute the full machine learning pipeline in a single call.
+        
+        This method automates the sequential steps of adding default models, 
+        optionally performing hyperparameter tuning via GridSearchCV, 
+        executing the final training, and generating performance visualizations.
+
+        Args:
+            X_train (np.ndarray or pd.DataFrame): Training features.
+            y_train (pd.Series or np.ndarray): Training labels.
+            X_test (np.ndarray or pd.DataFrame): Test features.
+            y_test (pd.Series or np.ndarray): Test labels.
+            optimize (bool): Whether to run GridSearchCV for all models before evaluation.
+                             Defaults to True.
+
+        Returns:
+            dict: Comprehensive results containing metrics (mean and std) for all models.
+        """
+        self.add_models_default()
+
+        if optimize:
+            print("\n>>> Phase 1 : Hyperparameter optimization")
+            self.optimize_all_models(X_train, y_train)
+        
+        print("\n>>> Phase 2 : Final training and evaluation")
+        self.train_and_evaluate_all(X_train, y_train, X_test, y_test, n_runs=1)
+        
+        self.display_results_table()
+        self.plot_comparison()
+        
+        return self.results
