@@ -15,7 +15,7 @@ class NEODataPreprocessor:
     """
 
     def __init__(
-        self, 
+        self,
         log_features: Optional[List[str]] = None,
         other_features: Optional[List[str]] = None,
         target_column: Optional[str] = None,
@@ -35,7 +35,7 @@ class NEODataPreprocessor:
             stratify (bool | None): Whether to stratify the train-test split based on target.
         """
         config = get_config()
-        
+
         # Features requiring Log transformation (skewed distributions)
         self.log_features = log_features if log_features is not None else config.get_param(
             'preprocessing.log_features',
@@ -46,30 +46,34 @@ class NEODataPreprocessor:
             'preprocessing.other_features',
             ['absolute_magnitude']
         )
-        
+
         self.numerical_features = self.log_features + self.other_features
 
-        self.target_column = target_column or config.get_param('preprocessing.target_column', 'hazardous')
-        self.test_size = test_size if test_size is not None else config.get_param('preprocessing.test_size', 0.2)
-        self.random_state = random_state if random_state is not None else config.get_param('preprocessing.random_state', 42)
-        self.stratify = stratify if stratify is not None else config.get_param('preprocessing.stratify', True)
-        
+        self.target_column = target_column or config.get_param(
+            'preprocessing.target_column', 'hazardous')
+        self.test_size = test_size if test_size is not None else config.get_param(
+            'preprocessing.test_size', 0.2)
+        self.random_state = random_state if random_state is not None else config.get_param(
+            'preprocessing.random_state', 42)
+        self.stratify = stratify if stratify is not None else config.get_param(
+            'preprocessing.stratify', True)
+
         self._preprocessor = None
         self._is_fitted = False
 
     def _create_preprocessor(self) -> ColumnTransformer:
         """
         Create the preprocessing pipeline using ColumnTransformer.
-        
+
         Strategies:
         1. Log-features: Apply log1p then RobustScaler.
         2. Other-features: Apply RobustScaler directly.
-        
+
         Note: We use RobustScaler instead of StandardScaler to handle outliers better.
         """
         log_pipeline = Pipeline([
             ('log', FunctionTransformer(np.log1p, validate=False)),
-            ('scaler', RobustScaler()) 
+            ('scaler', RobustScaler())
         ])
 
         other_pipeline = Pipeline([
@@ -83,8 +87,8 @@ class NEODataPreprocessor:
             ],
             remainder='drop'
         )
-        
-        return preprocessor 
+
+        return preprocessor
 
     def split_data(self, df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
         """
@@ -113,10 +117,10 @@ class NEODataPreprocessor:
     def fit(self, X_train: pd.DataFrame) -> 'NEODataPreprocessor':
         """
         Fit the preprocessor on training data.
-        
+
         Args:
             X_train (pd.DataFrame): Training features.
-        
+
         Returns:
             self: The fitted preprocessor instance.
         """
@@ -130,10 +134,10 @@ class NEODataPreprocessor:
     def transform(self, X: pd.DataFrame) -> np.ndarray:
         """
         Transform data using the fitted preprocessor.
-        
+
         Args:
             X (pd.DataFrame): Data to transform.
-            
+
         Returns:
             np.ndarray: Transformed data.
 
@@ -160,10 +164,10 @@ class NEODataPreprocessor:
         2. Split Train/Test
         3. Fit on Train
         4. Transform Train & Test
-        
+
         Args:
             df (pd.DataFrame): The raw dataframe.
-            
+
         Returns:
             Tuple: (X_train, X_test, y_train, y_test)
         """
