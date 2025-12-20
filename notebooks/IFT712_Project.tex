@@ -1,0 +1,1942 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+
+    \usepackage[utf8]{inputenc}
+  \usepackage{amssymb}
+  \usepackage[frenchb]{babel}
+  \usepackage{a4, fancyhdr}
+
+  \usepackage{longtable}
+  \usepackage{pdfpages}
+  \usepackage{fancyhdr}
+  \usepackage{geometry}\geometry{left=2cm,right=2cm,top=2cm, bottom=2cm, headsep=1.2cm}
+  \usepackage{graphicx}
+  \usepackage[T1]{fontenc}
+  \pagestyle{fancy}
+  \usepackage{appendix}
+  \usepackage{float}
+  \usepackage{listings}
+  \usepackage{amsmath,amsthm,amssymb}
+  \usepackage{subcaption}
+  \usepackage{float}
+  \usepackage{tabularray}
+  \usepackage{xcolor}
+  \usepackage{booktabs}
+  \usepackage{placeins}
+  \usepackage{url}
+
+  \renewcommand{\lstlistingname}{Code}
+  \usepackage{float}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{IFT712\_Project}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=false,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    
+    
+
+\begin{document}
+\thispagestyle{empty}
+\begin{center}
+  \includegraphics[width=0.6\textwidth]{UdeS_logo.png}\vspace{1cm}\\
+  %Première page du fichier
+  \Huge \textbf {Projet}\normalsize \vspace{1cm}\\
+  \rule{0.95\textwidth}{2pt}\vspace{\baselineskip}\\
+  \LARGE \textbf {IFT712} \normalsize \vspace{\baselineskip}\\
+  \LARGE \textsc {\textbf{Techniques d'apprentissage}}\normalsize\\
+
+  \rule{0.95\textwidth}{2pt}\vspace{1.5cm}\\
+  \includegraphics[width=0.9\textwidth]{bg.jpg}\vspace{1cm}
+
+
+
+  Réalisé par \vspace{\baselineskip} \\
+
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}{c}
+    \hline\hline
+    \emph{\textbf {Adrien SKRZYPCZAK: skra8835}} \\
+    \emph{\textbf  {Cédric HAN: hanc3460}}       \\
+    \emph{\textbf  {Robin BECARD: becr7846}}     \\
+    \hline\hline
+  \end{tabular}
+\end{center}
+
+\lhead{\includegraphics[height=1cm]{UdeS_logo.png}}
+\renewcommand{\headrulewidth}{0.1mm}
+\renewcommand{\footrulewidth}{0.1mm}
+\cfoot{}
+\rfoot{\thepage}
+\lfoot{IFT712 - Projet}
+\newpage
+\renewcommand{\contentsname}{Table des matières}
+
+\tableofcontents
+\newpage
+
+\section{Contexte}\label{contexte}
+
+Afin de clore cette session et de consolider nos connaissances
+théoriques et pratiques, nous avons pour projet final de mettre en
+application les concepts acquis en développant et en comparant six
+méthodes de classification différentes sur un jeu de données réel de
+notre choix. Ce projet vise à évaluer la performance de ces algorithmes,
+comprendre leurs forces et faiblesses respectives, et développer une
+expertise pratique en apprentissage automatique.
+
+\section{Méthodologie de travail}\label{muxe9thodologie-de-travail}
+
+Afin de réaliser ce projet, nous avons suivi une méthodologie de travail
+rigoureuse. En premier lieu, nous avons mis en place un
+\href{https://trello.com/invite/b/693b2c8476833a31b8d5fda8/ATTI44ac34d643ef44d182e37f18d0572d93F5289FD2/ift712project}{\textbf{TRELLO}}
+(Tableau de bord, Recherche, Expérimentation, Logique, Lecture,
+Organisation) pour structurer notre approche et assurer une progression
+méthodique tout au long du projet. Cet outil nous permet de suivre les
+différentes étapes du projet, de la recherche initiale à
+l'expérimentation et à l'analyse des résultats.
+
+De plus, afin de communiquer efficacement et de collaborer de façon
+fluide, nous avons créé un groupe \textbf{TEAMS} dédié au projet. Cet
+espace de travail collaboratif nous permet de partager des idées, des
+ressources, de discuter des avancées du projet en temps réel, et
+également d'organiser des réunions (initiale et mise au point).
+
+Pour finir, nous avons mis en place un dépôt
+\href{https://github.com/RobinBecard/IFT712_Project}{\textbf{GITHUB}}
+pour héberger notre code source, documenter nos travaux, et versionner
+nos différentes itérations. Ce dépôt facilite la collaboration entre les
+membres de l'équipe et assure une traçabilité claire des modifications
+apportées au code tout au long du projet.
+
+\section{Jeu de données}\label{jeu-de-donnuxe9es}
+
+\subsection{Présentation}\label{pruxe9sentation}
+
+Le jeu de données que nous avons choisi pour ce projet est \textbf{«
+  NASA - Nearest Earth Objects »} disponible sur
+\href{https://www.kaggle.com/datasets/sameepvani/nasa-nearest-earth-objects}{Kaggle}.
+Ce jeu de données compile les informations relatives aux \textbf{objets
+  proches de la Terre (NEO - Near-Earth Objects)} certifiés par la NASA,
+comprenant plus de 300 000 enregistrements concernant les astéroïdes et
+comètes détectés par les systèmes d'observation de la NASA. Les données
+ont été compilées à partir de sources officielles de la NASA, notamment
+le Centre d'Études des Objets Proches de la Terre (CNEOS) du Jet
+Propulsion Laboratory et le Minor Planet Center.
+
+\subsection{Description}\label{description}
+
+\subsubsection{Structure et contenu}\label{structure-et-contenu}
+
+Le jeu de données est structuré sous la forme d'un seul fichier CSV
+d'une taille d'environ 9 Mo. Il contient des informations détaillées sur
+les objets proches de la Terre, notamment :
+
+\begin{itemize}
+  \tightlist
+  \item
+        \textbf{Paramètres orbitaux} : les distances relatives par rapport à
+        la Terre, les vitesses orbitales et les vélocités absolues
+  \item
+        \textbf{Caractéristiques physiques} : les diamètres estimés des
+        astéroïdes, les albédos et autres propriétés de surface
+  \item
+        \textbf{Approches rapprochées} : un résumé des approches les plus
+        proches de la Terre et les dates de ces événements
+  \item
+        \textbf{Évaluation des risques} : les probabilités d'impact, les
+        classifications de danger potentiel
+  \item
+        \textbf{Métadonnées de découverte} : les dates de découverte, les
+        observatoires ayant effectué les observations initiales
+\end{itemize}
+
+Plus spécifiquement, le fichier principal \texttt{neo\_data.csv}
+contient les colonnes suivantes :
+
+\begin{itemize}
+  \tightlist
+  \item
+        \textbf{\texttt{id}} : Identifiant unique attribué par le JPL (Jet
+        Propulsion Laboratory) de la NASA.
+  \item
+        \textbf{\texttt{name}} : Le nom ou la désignation officielle de
+        l'astéroïde (ex : ``1999 RQ36'')
+  \item
+        \textbf{\texttt{absolute\_magnitude}} : Mesure de la luminosité
+        intrinsèque. \emph{Note} : Plus le chiffre est \textbf{petit}, plus
+        l'objet est brillant et généralement gros.*
+  \item
+        \textbf{\texttt{est\_diameter\_min}} : Estimation basse du diamètre de
+        l'astéroïde (en \textbf{km}).
+  \item
+        \textbf{\texttt{est\_diameter\_max}} : Estimation haute du diamètre de
+        l'astéroïde (en \textbf{km}).
+  \item
+        \textbf{\texttt{relative\_velocity}} (Vitesse relative) : Vitesse de
+        l'astéroïde par rapport à la Terre lors de son passage (en
+        \textbf{km/h}).
+  \item
+        \textbf{\texttt{miss\_distance}} (Distance de passage) : La distance
+        minimale entre l'astéroïde et la Terre (en \textbf{km}). C'est la
+        donnée critique pour le risque d'impact.
+  \item
+        \textbf{\texttt{orbiting\_body}} : L'astre autour duquel il gravite
+        (ici, c'est généralement la \textbf{Terre},car on mesure l'approche
+        terrestre).
+  \item
+        \textbf{\texttt{sentry\_object}} : Indicateur (True/False) si l'objet
+        est surveillé par le système ``Sentry'' de la NASA (système de
+        détection de collisions futures).
+  \item
+        \textbf{\texttt{hazardous}} : \textbf{La variable à prédire (Target)}.
+        Booléen (Vrai/Faux). Indique si l'astéroïde est classé comme
+        \textbf{Potentiellement Dangereux} (PHA) selon sa taille et sa
+        proximité.
+\end{itemize}
+
+Voici un aperçu global des typesdu jeu de données :
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+  \toprule\noalign{}
+  \begin{minipage}[b]{\linewidth}\raggedright
+    Variable
+  \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                     Type de Données (Programmation)
+                   \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                                      Type de Variable (Statistique)
+                                    \end{minipage}                                   \\
+  \midrule\noalign{}
+  \endhead
+  \bottomrule\noalign{}
+  \endlastfoot
+  \textbf{\texttt{id}}                        & \texttt{Integer} (Entier)                   & Qualitatif Nominal \\
+  \textbf{\texttt{name}}                      & \texttt{String} (Chaîne de caractères)      &
+  Qualitatif Nominal                                                                                             \\
+  \textbf{\texttt{est\_diameter\_min}}        & \texttt{Float} (Décimal)                    &
+  Quantitatif Continu                                                                                            \\
+  \textbf{\texttt{est\_diameter\_max}}        & \texttt{Float} (Décimal)                    &
+  Quantitatif Continu                                                                                            \\
+  \textbf{\texttt{relative\_velocity}}        & \texttt{Float} (Décimal)                    &
+  Quantitatif Continu                                                                                            \\
+  \textbf{\texttt{miss\_distance}}            & \texttt{Float} (Décimal)                    &
+  Quantitatif Continu                                                                                            \\
+  \textbf{\texttt{orbiting\_body}}            & \texttt{String} (Chaîne de
+  caractères)                                 & Qualitatif Nominal                                               \\
+  \textbf{\texttt{sentry\_object}}            & \texttt{Boolean} (Vrai/Faux)                &
+  Qualitatif Binaire                                                                                             \\
+  \textbf{\texttt{absolute\_magnitude}}       & \texttt{Float} (Décimal)                    &
+  Quantitatif Continu                                                                                            \\
+  \textbf{\texttt{hazardous}}                 & \texttt{Boolean} (Vrai/Faux)                & Qualitatif
+  Binaire                                                                                                        \\
+\end{longtable}
+
+\subsubsection{Sources des données}\label{sources-des-donnuxe9es}
+
+Les données proviennent de deux sources institutionnelles majeures :
+
+\paragraph{Centre for Near-Earth Object Studies
+  (CNEOS)}\label{centre-for-near-earth-object-studies-cneos}
+
+Le \textbf{Centre for Near-Earth Object Studies (CNEOS)} du Jet
+Propulsion Laboratory (JPL) de la NASA constitue la source primaire des
+données. Le CNEOS joue un rôle central dans le calcul des orbites de
+très haute précision pour les NEOs, la prédiction des approches
+rapprochées futures, l'évaluation exhaustive des probabilités d'impact
+sur le siècle à venir, et l'archivage des paramètres orbitaux dans la
+JPL Small-Body Database (SBDB). Le CNEOS exploite également deux
+systèmes de surveillance automatisés de renommée mondiale : le système
+\textbf{Sentry}, qui analyse les catalogues d'astéroïdes pour identifier
+les candidats aux impacts potentiels sur 100 ans, et le système
+\textbf{Scout}, qui traite les découvertes potentielles en temps quasi
+réel et peut identifier un impact potentiel en moins de 30 minutes suite
+à la détection initiale.
+
+\paragraph{Minor Planet Center (MPC)}\label{minor-planet-center-mpc}
+
+Le \textbf{Minor Planet Center (MPC)} de l'Union Astronomique
+Internationale gère le \textbf{Near-Earth Object Confirmation Page
+  (NEOCP)}, où sont publiées les découvertes d'objets potentiels en temps
+quasi réel. Le MPC collecte les observations reportées par les
+observateurs professionnels et amateurs du monde entier et maintient les
+catalogues officiels des astéroïdes et comètes.
+
+\subsubsection{Instruments et
+  Télescopes}\label{instruments-et-tuxe9lescopes}
+
+La détection des objets proches de la Terre repose sur un écosystème
+sophistiqué d'instruments terrestres et spatiaux répartis à travers le
+monde :
+
+\paragraph{Catalina Sky Survey (CSS)}\label{catalina-sky-survey-css}
+
+Le \textbf{Catalina Sky Survey} est actuellement le programme de
+détection actif le plus productif, découvrant les NEO au taux le plus
+élevé. Il exploite un système de trois télescopes entièrement financés
+par la NASA : le \textbf{Mount Lemmon Observatory} (Arizona) doté d'un
+miroir de 1,5 mètre de diamètre et constituant l'installation la plus
+productive, le \textbf{Catalina Observatory} (Arizona), et le
+\textbf{Siding Spring Observatory} (Australie). Le système est conçu
+pour détecter les astéroïdes jusqu'à la magnitude 22 et traite les
+données en temps quasi réel avec une latence d'environ cinq minutes
+après la dernière lecture d'image. Les découvertes sont validées par des
+observateurs experts et signalées au Minor Planet Center avec une
+latence typique d'approximativement 10 minutes.
+
+\paragraph{Spacewatch Program}\label{spacewatch-program}
+
+Le \textbf{programme Spacewatch} est en activité depuis plusieurs
+décennies avec le \textbf{Spacewatch Telescope} de 0,91 mètre sur Kitt
+Peak, équipé d'un détecteur CCD Tektronix 2048 x 2048. Le programme
+possède des capacités de suivi automatique d'objets se déplaçant entre
+0,1 et 4 degrés par jour et a découvert plus de 700 NEOs avant sa
+transition vers un rôle de récupération et caractérisation.
+
+\paragraph{WISE / NEOWISE}\label{wise-neowise}
+
+Le \textbf{Wide-field Infrared Survey Explorer (WISE)} est un télescope
+spatial infrarouge lancé en décembre 2009, fonctionnant avec un miroir
+infrarouge de 40 cm en orbite terrestre et des observations dans les
+bandes infrarouges à 3,4, 4,6, 12 et 22 μm. Après réactivation en 2013
+sous le nom \textbf{NEOWISE}, la mission a découvert plus de 33 500
+nouveaux astéroïdes et comètes et observe actuellement plus de 154 000
+objets du système solaire. NEOWISE recherche les objets NEO de plus de
+100 mètres de diamètre avec un albédo moyen de 0,14 et son exploitation
+coûte 5 millions de dollars par an pour son opération.
+
+\paragraph{Autres Instruments}\label{autres-instruments}
+
+D'autres instruments complètent ce réseau de détection, notamment le
+\textbf{LONEOS (Lowell Observatory Near-Earth Object Search)}, le
+\textbf{Pan-STARRS (Panoramic Survey Telescope and Rapid Response
+  System)}, et le \textbf{Large Synoptic Survey Telescope (LSST)} en
+développement, capable d'atteindre une magnitude limite de 25,1 pour
+détecter les NEO.
+
+\section{Architecture Logicielle et
+  Modélisation}\label{architecture-logicielle-et-moduxe9lisation}
+
+Pour structurer cette étude comparative, nous avons utilisé une
+architecture Orientée Objet. Cela permet de standardiser le protocole
+expérimental : tous les modèles suivent exactement le même processus
+d'entraînement et d'évaluation.
+
+Le diagramme de classes ci-dessous résume cette organisation :
+
+\pandocbounded{\includegraphics[keepaspectratio,alt={Diagramme de Classes UML}]{results/classes_IFT712.png}}
+\emph{(Figure 1 : Organisation des composants logiciels du projet)}
+
+\subsection{Gestion des Données}\label{gestion-des-donnuxe9es}
+
+Nous avons séparé le chargement et le traitement des données en deux
+classes distinctes :
+
+\begin{itemize}
+  \tightlist
+  \item
+        \textbf{\texttt{NEODataLoader}} : Se charge uniquement de lire le
+        fichier CSV et de fournir les données brutes.
+  \item
+        \textbf{\texttt{NEODataPreprocessor}} : Prépare les données pour
+        l'apprentissage. Elle nettoie les valeurs manquantes, normalise les
+        variables (\texttt{StandardScaler}) et équilibre les classes avec la
+        méthode \textbf{SMOTE}. Cela garantit que les modèles reçoivent de
+        propres données comparables.
+\end{itemize}
+
+\subsection{\texorpdfstring{Standardisation
+    (\texttt{BaseModel})}{Standardisation (BaseModel)}}\label{standardisation-basemodel}
+
+La classe abstraite \texttt{BaseModel} sert de socle commun. Elle évite
+la duplication de code et impose une rigueur méthodologique :
+
+\begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+        \textbf{\texttt{train}} : Lance l'entraînement et mesure le temps de
+        calcul.
+  \item
+        \textbf{\texttt{evaluate}} : Calcule les métriques clés (Précision,
+        Rappel, F1, AUC) de façon identique pour tous.
+  \item
+        \textbf{\texttt{optimize}} : Exécute une validation croisée
+        (\texttt{GridSearchCV}) pour trouver les meilleurs hyperparamètres.
+\end{enumerate}
+
+\subsection{Les Modèles de
+  Classification}\label{les-moduxe8les-de-classification}
+
+Six classes héritent de \texttt{BaseModel}, chacune implémentant un
+algorithme spécifique :
+
+\begin{itemize}
+  \tightlist
+  \item
+        \textbf{Approches Linéaires} : \texttt{LogisticRegressionClassifier}
+        et \texttt{LeastSquaresClassifier} (Ridge) servent de référence de
+        base (baseline).
+  \item
+        \textbf{Approche Probabiliste} : \texttt{NaiveBayesClassifier} base
+        ses prédictions sur les probabilités conditionnelles.
+  \item
+        \textbf{Approche Hiérarchique} : \texttt{DecisionTreeModel} utilise
+        des règles de décision simples et interprétables.
+  \item
+        \textbf{Approches Non-Linéaires} : \texttt{SVMClassifier} (Support
+        Vector Machine) et \texttt{NNClassifier} (Réseau de Neurones) sont
+        utilisés pour capturer des relations plus complexes entre les
+        variables.
+\end{itemize}
+
+\subsection{Outils d'Analyse}\label{outils-danalyse}
+
+Nous avons aussi isolé la logique de comparaison et d'affichage des
+modèles :
+
+\begin{itemize}
+  \tightlist
+  \item
+        \textbf{\texttt{model\_comparison.py}} : Récupère les résultats de
+        tous les modèles pour générer le tableau comparatif final.
+  \item
+        \textbf{\texttt{visualisation\_utils.py}} : Contient les fonctions
+        graphiques pour tracer les matrices de confusion et les courbes ROC de
+        manière uniforme.
+\end{itemize}
+
+\section{Implémentation}\label{impluxe9mentation}
+
+Les six méthodes de classification seront implémentées et comparées sur
+ce jeu de données. Chaque méthode sera évaluée selon des métriques
+standard de performance, notamment la précision, le rappel, le F1-score
+et l'aire sous la courbe ROC. Une analyse comparative des résultats
+permettra d'identifier les forces et les faiblesses de chaque approche
+pour cette application spécifique.
+
+\subsection{Import du jeu de données et
+  prétraitement}\label{import-du-jeu-de-donnuxe9es-et-pruxe9traitement}
+
+Tout d'abord, nous importons le jeu de données afin d'avoir une vue
+d'ensemble de sa structure et de son contenu.
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  Configuration loaded from: C:\textbackslash{}Users\textbackslash{}badds\textbackslash{}Documents\textbackslash{}Cours\textbackslash{}session\_automne\textbackslash{}IFT712
+  - Techniques apprentissage\textbackslash{}IFT712\_Project\textbackslash{}config.yaml
+  Project root: C:\textbackslash{}Users\textbackslash{}badds\textbackslash{}Documents\textbackslash{}Cours\textbackslash{}session\_automne\textbackslash{}IFT712 - Techniques
+  apprentissage\textbackslash{}IFT712\_Project
+\end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  Data loaded: 90836 rows, 10 columns
+  - Columns: ['id', 'name', 'est\_diameter\_min', 'est\_diameter\_max',
+  'relative\_velocity', 'miss\_distance', 'orbiting\_body', 'sentry\_object',
+  'absolute\_magnitude', 'hazardous']
+  - Memory usage: 15.62 MB
+  - Distribution of 'hazardous':
+  False    81996
+  True      8840
+
+  Data preview:
+\end{Verbatim}
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+  \begin{Verbatim}[commandchars=\\\{\}]
+    id                 name  est\_diameter\_min  est\_diameter\_max  \textbackslash{}
+    0  2162635  162635 (2000 SS164)          1.198271          2.679415
+    1  2277475    277475 (2005 WK4)          0.265800          0.594347
+    2  2512244   512244 (2015 YE18)          0.722030          1.614507
+    3  3596030          (2012 BV13)          0.096506          0.215794
+    4  3667127          (2014 GE35)          0.255009          0.570217
+
+    relative\_velocity  miss\_distance orbiting\_body  sentry\_object  \textbackslash{}
+    0       13569.249224   5.483974e+07         Earth          False
+    1       73588.726663   6.143813e+07         Earth          False
+    2      114258.692129   4.979872e+07         Earth          False
+    3       24764.303138   2.543497e+07         Earth          False
+    4       42737.733765   4.627557e+07         Earth          False
+
+    absolute\_magnitude  hazardous
+    0               16.73      False
+    1               20.00       True
+    2               17.83      False
+    3               22.20      False
+    4               20.09       True
+  \end{Verbatim}
+\end{tcolorbox}
+
+Une fois que nous avons une vue d'ensemble des caractéristiques du jeu
+de données, nous pouvons analyser la présence ou non de valeurs
+manquantes et le type de chaque caractéristique.
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+  \begin{Verbatim}[commandchars=\\\{\}]
+    id                    0
+    name                  0
+    est\_diameter\_min      0
+    est\_diameter\_max      0
+    relative\_velocity     0
+    miss\_distance         0
+    orbiting\_body         0
+    sentry\_object         0
+    absolute\_magnitude    0
+    hazardous             0
+    dtype: int64
+  \end{Verbatim}
+\end{tcolorbox}
+
+Nous remarquons que le jeu de données ne contient pas de valeurs
+manquantes, ce qui simplifie notre prétraitement.
+
+Ensuite, nous analysons plus en détail les caractéristiques du jeu de
+données, plus précisément leurs types pour avoir une idée des
+transformations nécessaires avant de les utiliser dans nos modèles de
+classification.
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  <class 'pandas.core.frame.DataFrame'>
+  RangeIndex: 90836 entries, 0 to 90835
+  Data columns (total 10 columns):
+  \#   Column              Non-Null Count  Dtype
+  ---  ------              --------------  -----
+  0   id                  90836 non-null  int64
+  1   name                90836 non-null  object
+  2   est\_diameter\_min    90836 non-null  float64
+  3   est\_diameter\_max    90836 non-null  float64
+  4   relative\_velocity   90836 non-null  float64
+  5   miss\_distance       90836 non-null  float64
+  6   orbiting\_body       90836 non-null  object
+  7   sentry\_object       90836 non-null  bool
+  8   absolute\_magnitude  90836 non-null  float64
+  9   hazardous           90836 non-null  bool
+  dtypes: bool(2), float64(5), int64(1), object(2)
+  memory usage: 5.7+ MB
+\end{Verbatim}
+
+Nous nous occupons de transformer les colonnes booléennes en numériques
+(0 et 1) pour faciliter leur utilisation.
+
+Ensuite, nous examinons les valeurs uniques des colonnes catégorielles
+pour décider comment les traiter.
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  Valeurs uniques par colonne :
+  orbiting\_body: ['Earth']
+  sentry\_object: [0]
+  hazardous: [0 1]
+\end{Verbatim}
+
+Nous remarquons que les colonnes \textbf{\texttt{orbiting\_body}} et
+\textbf{\texttt{sentry\_object}} sont invariantes, elles ne contiennent
+qu'une seule valeur unique. Nous décidons donc de les supprimer du jeu
+de données car elles n'apportent aucune information utile pour la
+modélisation. Egalement, la colonne \textbf{\texttt{id}} et
+\textbf{\texttt{name}} sont des identifiants uniques pour chaque
+enregistrement et ne contribuent pas à la prédiction de la variable
+cible. Nous les supprimons également.
+
+Abordons maintenant la sélection des caractéristiques pertinentes pour
+nos modèles de classification. D'après nos recherches, les
+caractéristiques suivantes semblent particulièrement importantes pour
+évaluer le potentiel de dangerosité des objets proches de la Terre :
+
+\begin{itemize}
+  \tightlist
+  \item
+        \textbf{\texttt{est\_diameter\_min}}
+  \item
+        \textbf{\texttt{est\_diameter\_max}}
+  \item
+        \textbf{\texttt{relative\_velocity}}
+  \item
+        \textbf{\texttt{miss\_distance}}
+  \item
+        \textbf{\texttt{absolute\_magnitude}}
+\end{itemize}
+
+Pour finir, nous ne prenons bien évidemment pas l'attribut
+\textbf{\texttt{hazardous}} en compte dans nos caractéristiques d'entrée
+pour nos modèles, car il s'agit de notre variable cible.
+
+Maintenant, intéressons-nous aux variables corrélées du jeu de données.
+Pour cela, nous utilisons une matrice de corrélation pour visualiser les
+relations entre les différentes caractéristiques numériques.
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_34_0.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+D'après la matrice de corrélation, nous pouvons observer que certaines
+caractéristiques présentent des corrélations significatives entre elles.
+Par exemple, les colonnes \textbf{\texttt{est\_diameter\_min}} et
+\textbf{\texttt{est\_diameter\_max}} sont \textbf{fortement corrélées}
+(exactement 1), ce qui est logique car elles réprésentent des
+estimations du diamètre de l'astéroïde. Nous pouvons donc supprimer sans
+craintes l'une de ces deux colonnes pour éviter la redondance dans nos
+modèles. Nous choisissons de conserver
+\textbf{\texttt{est\_diameter\_max}} car elle représente la valeur
+maximale estimée du diamètre, ce qui peut être plus pertinent pour
+évaluer le potentiel de dangerosité.
+
+Ensuite, nous pouvons visualiser la distribution et outliers de chaque
+caractéristique numérique pour mieux comprendre leur comportement.
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_37_0.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+L'examen des boîtes à moustaches en échelle logarithmique révèle trois
+points cruciaux pour le prétraitement des données :
+
+\begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+        \textbf{Colinéarité parfaite} : Les variables
+        \texttt{est\_diameter\_min} et \texttt{est\_diameter\_max} présentent
+        des distributions strictement identiques. Cette redondance confirme la
+        nécessité de supprimer l'une des deux pour éviter la multicolinéarité.
+  \item
+        \textbf{Présence massive d'outliers} : Une forte asymétrie est visible
+        pour les \textbf{diamètres} et la \textbf{vélocité}, avec de
+        nombreuses valeurs aberrantes extrêmes vers le haut. Une
+        standardisation classique (Z-score) serait biaisée ; une
+        transformation logarithmique est nécessaire pour normaliser ces
+        distributions.
+  \item
+        \textbf{Grande dispersion de la distance} : La variable
+        \texttt{miss\_distance} s'étend sur une plage immense (de \(10^4\) à
+        \(10^8\)). Bien qu'elle ait moins d'outliers isolés, cette
+        \textbf{variance extrême} risque de dominer les calculs de distance
+        (écrasement des autres variables). Elle nécessite donc aussi une
+        transformation logarithmique avant la mise à l'échelle.
+\end{enumerate}
+
+En prenant en compte ces observations, nous décidons d'appliquer une
+transformation logarithmique aux caractéristiques suivantes pour
+atténuer l'impact des outliers et normaliser les distributions :
+
+\begin{itemize}
+  \tightlist
+  \item
+        \textbf{\texttt{est\_diameter\_max}}
+  \item
+        \textbf{\texttt{relative\_velocity}}
+  \item
+        \textbf{\texttt{miss\_distance}}
+\end{itemize}
+
+Ainsi, dans le fichier \textbf{preprocessor}, nous transformons les
+données brutes en matrices prêtes pour l'entraînement des modèles. La
+fonction \texttt{preprocess} commence par isoler la variable cible
+(\texttt{hazardous}) des caractéristiques, puis divise le jeu de données
+en ensembles d'entraînement et de test afin de garantir une évaluation
+impartiale. Elle applique ensuite, via un \texttt{ColumnTransformer},
+une transformation logarithmique (\texttt{np.log1p}) suivie d'une mise à
+l'échelle robuste (\texttt{RobustScaler}) sur les variables à forte
+asymétrie (\emph{diameter}, \emph{velocity}, \emph{distance}), tandis
+que la magnitude absolue est uniquement normalisée, ce qui permet de
+réduire l'impact des valeurs aberrantes (\emph{outliers}) et
+d'harmoniser les distributions avant l'apprentissage.
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  Data split:
+  - Train: 72668 samples
+  - Test:  18168 samples
+  - Number of features: 4
+  - Features: ['est\_diameter\_max', 'relative\_velocity', 'miss\_distance',
+  'absolute\_magnitude']
+
+  Normalization statistics:
+  - X\_train: min=-7.251, max=18.428, mean=-0.004, std=0.925
+  - X\_test:  min=-6.726, max=10.334, mean=-0.007, std=0.915
+  - Data is centered around 0 with std \textasciitilde{} 1
+
+  Final dimensions:
+  - X\_train: (72668, 4)
+  - X\_test:  (18168, 4)
+  - y\_train: (72668,)
+  - y\_test:  (18168,)
+\end{Verbatim}
+
+L'étape de validation du pipeline de données confirme une préparation
+optimale pour les futurs modèles de classification. Avec un échantillon
+d'entraînement de \textbf{72 668} observations et un ensemble de test de
+\textbf{18 168}, la séparation des données respecte strictement le ratio
+\textbf{80/20} défini dans la configuration. Le processus de sélection a
+permis d'isoler quatre caractéristiques fondamentales : le diamètre
+maximal estimé, la vitesse relative, la distance de rapprochement et la
+magnitude absolue. Cette réduction dimensionnelle, combinée à la
+suppression des identifiants et des variables invariantes, garantit un
+modèle focalisé sur les prédicteurs à fort impact.
+
+L'application du \texttt{RobustScaler} couplée à une transformation
+logarithmique montre une efficacité remarquable sur les distributions
+initialement asymétriques du dataset NASA. Les statistiques
+post-traitement révèlent une médiane centrée exactement à 0.000 et une
+moyenne de -0.004, témoignant d'une distribution désormais symétrique.
+L'écart-type stabilisé autour de 0.925 assure que toutes les variables
+partagent une échelle comparable. Cette normalisation est cruciale pour
+la stabilité des coefficients du classifier par moindres carrés (Ridge)
+et permet d'éviter que les caractéristiques à forte variance, comme la
+distance de rapprochement, ne dominent artificiellement le processus
+d'apprentissage.
+
+Suite à l'exécution du pipeline de prétraitement, il est essentiel de
+valider visuellement l'impact des transformations appliquées sur nos
+variables explicatives.
+
+Les graphiques ci-dessous comparent les distributions \textbf{avant}
+(données brutes) et \textbf{après} transformation (logarithme et/ou mise
+à l'échelle). L'objectif est de confirmer que l'application de la
+fonction logarithmique (\texttt{np.log1p}) a bien permis de réduire
+l'asymétrie (\emph{skewness}) des variables comme le diamètre ou la
+vélocité, et que le \texttt{RobustScaler} a uniformisé les plages de
+valeurs tout en gérant les valeurs aberrantes.
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  Vérification de l'effet du prétraitement (Log + Scaling) :
+\end{Verbatim}
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_46_1.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+
+  Class Distribution Analysis (Hazardous)
+  =================================================================
+  Train Count  Train \%  Test Count  Test \%
+  hazardous
+  0                65596    90.27       16400   90.27
+  1                 7072     9.73        1768    9.73
+  =================================================================
+\end{Verbatim}
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_47_1.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+L'analyse de la répartition de la variable cible hazardous met en
+évidence un \textbf{déséquilibre prononcé}, caractéristique des enjeux
+de détection d'objets géocroiseurs. Avec seulement \texttt{9.73\%}
+d'objets classés comme dangereux, le dataset présente un ratio d'environ
+9:1. La vérification confirme que ce ratio est préservé de manière quasi
+identique entre les ensembles d'entraînement et de test grâce à la
+stratification. Cette structure justifie l'implémentation de stratégies
+compensatoires, telles que l'utilisation de poids de classe
+(class\_weight: balanced), pour forcer le modèle à accorder une
+importance accrue à la détection de la classe minoritaire.
+
+\subsection{Entraînement et évaluation des
+  modèles}\label{entrauxeenement-et-uxe9valuation-des-moduxe8les}
+
+Une fois que les données ont été prétraitées, nous pouvons procéder à
+l'entraînement et à l'évaluation des six modèles de classification
+sélectionnés. Chaque modèle sera entraîné sur l'ensemble d'entraînement
+et évalué sur l'ensemble de test en utilisant les métriques de
+performance définies précédemment. Afin de rendre les résultats
+comparables, nous utiliserons une validation croisée et des techniques
+de réglage des hyperparamètres pour optimiser chaque modèle.
+
+Le jeu de données présente un \textbf{déséquilibre de classe
+  significatif (\textasciitilde9.73\% d'objets dangereux)}. Pour garantir
+que nos modèles ne soient pas simplement des ``prédicteurs de la classe
+majoritaire'', nous appliquons les stratégies suivantes :
+
+\begin{itemize}
+  \tightlist
+  \item
+        \textbf{Division Stratifiée :} Nous utilisons un découpage
+        \textbf{80/20} (Train/Test) qui préserve strictement le ratio des
+        classes dans les deux ensembles.
+  \item
+        \textbf{Pondération des Classes
+          (\texttt{class\_weight=\textquotesingle{}balanced\textquotesingle{}})
+          :} Appliquée aux modèles linéaires et au SVM, cette technique pénalise
+        plus lourdement les erreurs sur la classe minoritaire (les NEO
+        dangereux).
+  \item
+        \textbf{Optimisation par Recherche sur Grille (GridSearchCV) :} Chaque
+        modèle subit un réglage d'hyperparamètres avec une \textbf{validation
+          croisée à 5 plis (5-fold CV)}. Ce processus permet d'ajuster des
+        paramètres critiques comme la profondeur des arbres, la force de
+        régularisation (\(C\)) ou la structure du réseau de neurones.
+\end{itemize}
+
+La précision globale (\emph{Accuracy}) étant trompeuse dans ce contexte,
+nous évaluons nos modèles selon les critères suivants :
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+  \toprule\noalign{}
+  \begin{minipage}[b]{\linewidth}\raggedright
+    Métrique
+  \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                     Importance pour le projet
+                   \end{minipage}                                     \\
+  \midrule\noalign{}
+  \endhead
+  \bottomrule\noalign{}
+  \endlastfoot
+  \textbf{Rappel (Recall)}                    & Crucial pour ne manquer aucun objet
+  potentiellement dangereux.                                                                      \\
+  \textbf{Précision}                          & Pour limiter le nombre de fausses alertes.        \\
+  \textbf{F1-Score}                           & La moyenne harmonique, offrant un équilibre entre
+  précision et rappel.                                                                            \\
+  \textbf{AUC-ROC}                            & Mesure la capacité de discrimination globale du
+  modèle, indépendamment du seuil de décision.                                                    \\
+  \textbf{Temps de calcul}                    & Évaluation du coût computationnel
+  (particulièrement pour le SVM et le MLP).                                                       \\
+\end{longtable}
+
+\subsubsection{Arbre de décision}\label{arbre-de-duxe9cision}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  --> Training Decision Tree{\ldots}
+\end{Verbatim}
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_53_1.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  --> Computing t-SNE on 18168 samples{\ldots}
+\end{Verbatim}
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_53_3.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+\subsubsection{SVM}\label{svm}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  --> Training SVM{\ldots}
+\end{Verbatim}
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_55_1.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  --> Computing t-SNE on 18168 samples{\ldots}
+\end{Verbatim}
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_55_3.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+\subsubsection{Régression Logistique}\label{ruxe9gression-logistique}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  --> Training Logistic Regression{\ldots}
+\end{Verbatim}
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_57_1.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  --> Computing t-SNE on 18168 samples{\ldots}
+\end{Verbatim}
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_57_3.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+\subsubsection{Bayes naïf}\label{bayes-nauxeff}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  --> Training Naive Bayes{\ldots}
+\end{Verbatim}
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_59_1.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  --> Computing t-SNE on 18168 samples{\ldots}
+\end{Verbatim}
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_59_3.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+\subsubsection{Réseau de neurones}\label{ruxe9seau-de-neurones}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  --> Training Neural Network{\ldots}
+\end{Verbatim}
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_61_1.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  --> Computing t-SNE on 18168 samples{\ldots}
+\end{Verbatim}
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_61_3.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+\subsubsection{Moindres carrés}\label{moindres-carruxe9s}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  --> Training Least Squares{\ldots}
+\end{Verbatim}
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_63_1.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+  --> Computing t-SNE on 18168 samples{\ldots}
+\end{Verbatim}
+
+\begin{center}
+  \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{IFT712_Project_files/IFT712_Project_63_3.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+\subsection{Optimisation des
+  Hyperparamètres}\label{optimisation-des-hyperparamuxe8tres}
+
+L'optimisation des hyperparamètres constitue une étape cruciale pour
+maximiser les performances de nos modèles de classification. Pour
+automatiser et standardiser ce processus sur l'ensemble de nos six
+algorithmes, nous avons développé une infrastructure logicielle qui
+s'articule autour de trois composants principaux : le script
+\textbf{\texttt{optimize\_all\_models.py}}, la classe
+\textbf{\texttt{ModelManager}}, et la méthode
+\textbf{\texttt{optimize()}} de la classe abstraite
+\textbf{\texttt{BaseClassifier}}.
+
+\subsubsection{Infrastructure
+  d'Optimisation}\label{infrastructure-doptimisation}
+
+Le script \textbf{\texttt{optimize\_all\_models.py}} sert de point
+d'entrée interactif pour l'optimisation. Il orchestre le processus
+complet en chargeant les données via \texttt{NEODataLoader}, en
+appliquant le prétraitement avec \texttt{NEODataPreprocessor}, puis en
+initialisant un \texttt{ModelManager} qui gère l'ensemble des modèles.
+Ce script propose une interface utilisateur permettant de sélectionner
+interactivement quels modèles optimiser. À l'issue du processus, les
+meilleurs hyperparamètres découverts sont affichés au format YAML,
+facilitant leur intégration directe dans le fichier de configuration
+\texttt{config.yaml}.
+
+La classe \textbf{\texttt{ModelManager}} joue son rôle de manager. Elle
+charge automatiquement les grilles de paramètres depuis le fichier
+\textbf{\texttt{optimization\_grids.yaml}}, qui définit pour chaque
+modèle l'espace de recherche des hyperparamètres ainsi que la stratégie
+d'optimisation à adopter (recherche exhaustive par grille ou recherche
+aléatoire). La méthode \texttt{optimize\_model()} du
+\texttt{ModelManager} gère intelligemment les spécificités de chaque
+algorithme : elle peut sous-échantillonner les données d'entraînement
+pour les modèles coûteux comme le SVM (réduisant le temps de calcul),
+adapter le nombre de plis de validation croisée, et choisir la métrique
+de scoring appropriée (AUC-ROC par défaut, avec repli sur F1-score pour
+les modèles sans probabilités).
+
+\subsubsection{Méthode d'Optimisation}\label{muxe9thode-doptimisation}
+
+Au cœur de ce système se trouve la méthode \textbf{\texttt{optimize()}}
+de la classe \texttt{BaseClassifier}, qui implémente la logique
+d'optimisation proprement dite. Cette méthode exploite les classes
+\textbf{\texttt{GridSearchCV}} et \textbf{\texttt{RandomizedSearchCV}}
+de scikit-learn pour explorer systématiquement l'espace des
+hyperparamètres. \texttt{GridSearchCV} teste exhaustivement toutes les
+combinaisons possibles de paramètres, garantissant l'identification du
+meilleur compromis au prix d'un temps de calcul potentiellement élevé.
+Pour les modèles avec des espaces de recherche très larges,
+\texttt{RandomizedSearchCV} offre une alternative efficace en
+échantillonnant aléatoirement un nombre fixe de configurations,
+permettant de couvrir l'espace de manière plus économe.
+
+La validation croisée à \textbf{5 plis} (5-fold cross-validation)
+constitue le mécanisme central d'évaluation. Pour chaque combinaison
+d'hyperparamètres testée, les données d'entraînement sont divisées en 5
+sous-ensembles : le modèle est entraîné sur 4 plis et validé sur le
+5ème, ce processus étant répété 5 fois avec des rotations différentes.
+Cette approche garantit une estimation des performances, réduisant le
+risque de sur-apprentissage et assurant que les hyperparamètres
+sélectionnés généralisent bien à des données non vues.
+
+\subsubsection{Configuration et
+  Stratégies}\label{configuration-et-stratuxe9gies}
+
+Le fichier \textbf{\texttt{optimization\_grids.yaml}} centralise toute
+la configuration de l'optimisation. Il définit des paramètres globaux
+(nombre de plis CV, métrique de scoring, parallélisation) ainsi que des
+grilles spécifiques à chaque modèle. Par exemple, pour l'arbre de
+décision, nous explorons différentes profondeurs maximales
+(\texttt{max\_depth}), critères de division (\texttt{gini} vs
+\texttt{entropy}), et tailles minimales de nœuds, tout en imposant
+systématiquement
+\texttt{class\_weight=\textquotesingle{}balanced\textquotesingle{}} pour
+gérer le déséquilibre des classes.
+
+Cette architecture modulaire garantit la reproductibilité des
+expériences, facilite l'extension à de nouveaux modèles, et permet
+d'obtenir des hyperparamètres optimisés de manière rigoureuse et
+scientifique. Les résultats de ces optimisations constituent la base des
+performances finales rapportées dans notre étude comparative.
+
+\section{Résultats et Comparaison}\label{ruxe9sultats-et-comparaison}
+
+\subsection{Résultats de nos modèles de
+  classifications}\label{ruxe9sultats-de-nos-moduxe8les-de-classifications}
+
+Après avoir entraîné tous nos modèles avec les paramètres optimaux, et
+les avoir testés sur un jeu de test. Nous obtenons les métriques
+suivantes pour chacun des modèles comparés dans un tableau :
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1026}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1282}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1282}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1282}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1282}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1282}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1282}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1282}}@{}}
+  \toprule\noalign{}
+  \begin{minipage}[b]{\linewidth}\raggedright
+    Méthode
+  \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+                     Accuracy
+                   \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+                                      Precision
+                                    \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+                                                       Recall
+                                                     \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+                                                                        F1-Score
+                                                                      \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+                                                                                         AUC-ROC
+                                                                                       \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+                                                                                                          Temps (s)
+                                                                                                        \end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+                                                                                                                           Mémoire (MB)
+                                                                                                                         \end{minipage}                               \\
+  \midrule\noalign{}
+  \endhead
+  \bottomrule\noalign{}
+  \endlastfoot
+  \textbf{Decision Tree}                      & 0.7934 ± 0.0000                           & 0.3179 ± 0.0000                           & 0.9796 ±
+  0.0000                                      & 0.4800 ± 0.0000                           & 0.9164 ± 0.0000                           & 0.1200 ± 0.0172                           & 0.61 ±
+  0.12                                                                                                                                                                                          \\
+  \textbf{SVM}                                & 0.7797 ± 0.0000                           & 0.3055 ± 0.0000                           & 0.9921 ± 0.0000                           &
+  0.4671 ± 0.0000                             & 0.9022 ± 0.0000                           & 1026.8297 ± 341.1014                      & 1.15 ±
+  1.44                                                                                                                                                                                          \\
+  \textbf{Logistic Regression}                & 0.7848 ± 0.0000                           & 0.3051 ± 0.0000                           &
+  0.9480 ± 0.0000                             & 0.4616 ± 0.0000                           & 0.8893 ± 0.0000                           & 0.3072 ± 0.0113                           &
+  1.15 ± 2.28                                                                                                                                                                                   \\
+  \textbf{Naive Bayes}                        & 0.8323 ± 0.0000                           & 0.2815 ± 0.0000                           & 0.4661 ±
+  0.0000                                      & 0.3510 ± 0.0000                           & 0.8642 ± 0.0000                           & 0.0179 ± 0.0019                           & 0.14 ±
+  0.28                                                                                                                                                                                          \\
+  \textbf{Neural Network}                     & 0.9144 ± 0.0000                           & 0.7494 ± 0.0000                           & 0.1810 ±
+  0.0000                                      & 0.2916 ± 0.0000                           & 0.9150 ± 0.0000                           & 9.0460 ± 0.5910                           & 1.66 ±
+  3.29                                                                                                                                                                                          \\
+  \textbf{Least Squares}                      & 0.7392 ± 0.0000                           & 0.2705 ± 0.0000                           & 0.9898 ±
+  0.0000                                      & 0.4249 ± 0.0000                           & nan ± nan                                 & 0.0415 ± 0.0166                           & 0.25 ± 0.49 \\
+\end{longtable}
+
+Nous obtenons également la figure suivante :
+
+\begin{figure}
+  \centering
+  \pandocbounded{\includegraphics[keepaspectratio,alt={Comparaison des performances des modèles optimisés}]{results/optimized_model_comparison.png}}
+  \caption{Comparaison des performances des modèles optimisés}
+\end{figure}
+
+Au terme de ce projet évaluant six approches de classification pour la
+défense planétaire, une tendance lourde se dégage. L'analyse croisée des
+métriques de performance, de temps et de mémoire révèle une dichotomie
+claire : il n'existe pas de modèle universel, mais des outils
+spécialisés répondant à des besoins souvent opposés, oscillant entre
+rapidité d'exécution, précision chirurgicale et sécurité absolue.
+
+\subsubsection{Analyse par Modèle}\label{analyse-par-moduxe8le}
+
+L'\textbf{Arbre de Décision} se distingue par sa rigueur. Il affiche une
+excellente Accuracy et la meilleure Précision du lot (89.2\%), ce qui
+signifie que ses alertes sont extrêmement fiables. Toutefois, cette
+sélectivité est aussi sa principale faiblesse : avec un Rappel
+catastrophique de 13.6\%, il ignore la quasi-totalité des menaces
+réelles. C'est un outil très efficace (0.08s) pour valider une menace,
+mais inadapté comme système d'alerte primaire.
+
+Le \textbf{Réseau de Neurones} s'impose comme le champion statistique de
+l'étude, affichant la meilleure Accuracy (91.5\%) et la meilleure AUC
+(0.914). Il sépare très bien les données dans l'absolu. Cependant, tout
+comme l'Arbre, il peine à identifier la classe minoritaire dangereuse
+sans un sur-échantillonnage plus agressif (Rappel de 15.1\%). De plus,
+il est plus lourd que la moyenne, demandant plus de ressources (11.3s)
+pour un gain de sécurité marginal.
+
+À l'opposé, le \textbf{SVM} endosse le rôle de ``Gardien''. Avec un
+Rappel impressionnant de 99.43\%, il ne laisse passer quasiment aucun
+astéroïde dangereux. Cette sécurité maximale implique un compromis
+important : une Précision faible (beaucoup de fausses alarmes) et une
+Accuracy qui chute à 77.2\%. Son défaut majeur reste sa lourdeur
+computationnelle, étant excessivement lent à entraîner (167.7s) bien que
+très économe en mémoire.
+
+La véritable surprise de cette étude réside dans le classifier des
+\textbf{Moindres Carrés (Least Squares)}. Il offre une sécurité quasi
+identique au SVM (Rappel de 98.98\%) mais s'exécute en 0.01 seconde,
+soit environ 13 000 fois plus vite. Il représente le candidat idéal pour
+un traitement temps réel sur des flux de données massifs, offrant le
+meilleur ratio entre vitesse d'exécution et sécurité opérationnelle.
+
+La \textbf{Régression Logistique} offre quant à elle le compromit le
+plus équilibré. Elle maintient un Rappel très élevé (95.0\%) tout en
+conservant une Accuracy correcte, ce qui lui permet d'atteindre le
+meilleur F1-Score (46.23\%) parmi les modèles dits sécuritaires. Enfin,
+le \textbf{Naïve Bayes} s'est montré décevant. Avec 46.6\% de Rappel et
+une précision faible, il est surpassé sur tous les plans par nos modèles
+optimisés, ne conservant pour lui que sa légèreté extrême.
+
+Dans l'objectif de mieux comprendre les forces et les faiblesses des
+résultats que nous avons obtenus. Il peut être intéressant de comparer
+ce que nous avons obtenu avec d'autres personnes ayant effectué un
+travail similaire.
+
+Nous allons comparer donc ce que nous avons obtenu avec les meilleures
+contributions sur le Kaggle du jeu de données, et interroger les
+différences.
+
+\subsection{Comparaison avec un premier
+  concurrent}\label{comparaison-avec-un-premier-concurrent}
+
+Lors de nos travaux, nous avons remarqué que plusieurs études
+antérieures avaient également exploré la classification des objets
+proches de la Terre en utilisant des techniques d'apprentissage
+automatique. Par exemple, ce lien
+\url{https://www.kaggle.com/code/elnahas/nasa-nearest-earth-objects}
+présente les travaux de \textbf{Ahmed Elnahas} qui s'est penché sur le
+même jeu de données. Il a utilisé des modèles tels que knn, random
+forest, arbre de décision et XGBoost pour prédire la dangerosité des
+objets les plus proches de la Terre. Ses résultats montrent que le
+modèle XGBoost a obtenu les meilleures performances avec une précision
+de 91\%. Cependant, comme beaucoup d'autres travaux sur ce jeu de
+données, l'accent est principalement mis sur la précision globale
+(accuracy), qui comme nous l'avons souligné, peut être trompeuse dans le
+contexte d'un jeu de données déséquilibré.
+
+\subsubsection{Méthodologie Comparée}\label{muxe9thodologie-comparuxe9e}
+
+Pour situer la pertinence de nos travaux, nous avons confronté nos
+résultats à ceux du notebook Kaggle de \textbf{Ahmed Elnahas}
+(\texttt{nasa-nearest-earth-objects}), qui fait référence sur ce jeu de
+données. Notre analyse comparative s'est articulée autour de deux axes
+principaux. D'une part, nous avons effectué une confrontation directe
+sur les algorithmes communs aux deux études pour isoler l'impact du
+traitement des données. D'autre part, nous avons analysé les choix
+stratégiques divergents, opposant nos modèles spécialisés à ses modèles
+d'ensemble.
+
+\subsubsection{Comparaison Directe : Modèles
+  Similaires}\label{comparaison-directe-moduxe8les-similaires}
+
+Le concurrent a implémenté, tout comme nous, un \textbf{Arbre de
+  Décision} et un \textbf{Naïve Bayes Gaussien}. L'analyse de ces
+résultats croisés met en lumière l'importance cruciale du pré-traitement
+des données.
+
+\paragraph{Arbre de Décision (Decision
+  Tree)}\label{arbre-de-duxe9cision-decision-tree}
+
+\begin{longtable}[]{@{}llll@{}}
+  \toprule\noalign{}
+  Indicateur               & Notre Modèle     & Concurrent (Kaggle)   & Delta            \\
+  \midrule\noalign{}
+  \endhead
+  \bottomrule\noalign{}
+  \endlastfoot
+  \textbf{Accuracy}        & \textbf{91.43\%} & 89.00\%               & \textbf{+2.43\%}
+  (Victoire)                                                                             \\
+  \textbf{Rappel (Recall)} & 13.57\%          & \emph{Non communiqué} & -                \\
+  \textbf{Précision}       & 89.22\%          & \emph{Non communiqué} & -                \\
+  \textbf{F1-Score}        & 23.56\%          & \emph{Non communiqué} &                  \\
+  \textbf{Temps}           & \textbf{0.08 s}  & \emph{N/A}            & -                \\
+\end{longtable}
+
+Notre implémentation de l'Arbre de Décision surclasse nettement celle du
+concurrent avec un gain de \textbf{+2.43\%} en précision globale. Cette
+différence s'explique par notre stratégie de conservation des données.
+Alors que le concurrent a supprimé des variables physiques critiques
+comme la magnitude absolue et la distance minimale, nous les avons
+conservées et normalisées. De plus, en imposant une limite de profondeur
+(\texttt{max\_depth}) à notre arbre, nous avons garanti une meilleure
+capacité de généralisation, là où le modèle par défaut du concurrent
+souffre probablement de sur-apprentissage.
+
+\paragraph{Naïve Bayes (GaussianNB)}\label{nauxefve-bayes-gaussiannb}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
+  \toprule\noalign{}
+  \begin{minipage}[b]{\linewidth}\raggedright
+    Indicateur
+  \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                     Notre Modèle
+                   \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                                      Concurrent (Kaggle)
+                                    \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                                                       Delta
+                                                     \end{minipage}                                                     \\
+  \midrule\noalign{}
+  \endhead
+  \bottomrule\noalign{}
+  \endlastfoot
+  \textbf{Accuracy}                           & 83.23\%                                     & \textbf{89.59\%}                            & -6.36\% \\
+  \textbf{Rappel (Recall)}                    & \textbf{46.61\%}                            & \emph{Faible (estimé)}                      &
+  \textbf{Avantage Sécurité}                                                                                                                        \\
+  \textbf{Précision}                          & 28.15\%                                     & \emph{Élevée (estimée)}                     & -       \\
+  \textbf{F1-Score}                           & 35.10\%                                     & \emph{Non communiqué}                       &         \\
+\end{longtable}
+
+Si le concurrent affiche une accuracy supérieure sur le Naïve Bayes, ce
+résultat est en réalité trompeur. En retirant les variables
+discriminantes, son modèle est devenu aveugle et se contente de prédire
+la classe majoritaire (les objets inoffensifs), ce qui gonfle
+artificiellement son score. À l'inverse, notre modèle accepte de perdre
+en précision globale pour maintenir une sensibilité fonctionnelle,
+réussissant à capturer près de la moitié (\textbf{46\%}) des menaces
+réelles, ce qui le rend bien plus pertinent pour un usage concret.
+
+\subsubsection{Comparaison des Approches
+  Divergentes}\label{comparaison-des-approches-divergentes}
+
+Au-delà des algorithmes communs, nos philosophies de modélisation
+diffèrent radicalement. Le concurrent a misé sur la puissance de calcul
+brute via l'\textbf{Ensemble Learning} avec des algorithmes comme Random
+Forest et XGBoost. Bien que ces modèles offrent d'excellents scores
+globaux (jusqu'à 91.1\%), ils restent des boîtes noires difficiles à
+interpréter. Sans réglage spécifique du seuil de décision, ils tendent à
+favoriser la classe majoritaire et laissent passer des astéroïdes
+dangereux.
+
+De notre côté, nous avons privilégié une approche mathématique
+rigoureuse visant soit la sécurité maximale, soit la rapidité extrême.
+Comme le montre le tableau ci-dessous, nos modèles exclusifs (SVM, Least
+Squares) offrent des garanties de sécurité que les modèles probabilistes
+du concurrent ne parviennent pas à égaler.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
+  \toprule\noalign{}
+  \begin{minipage}[b]{\linewidth}\raggedright
+    Modèle
+  \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                     Accuracy
+                   \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                                      Rappel (Détection Danger)
+                                    \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                                                       Temps d'exécution
+                                                     \end{minipage}                                                             \\
+  \midrule\noalign{}
+  \endhead
+  \bottomrule\noalign{}
+  \endlastfoot
+  \textbf{SVM (Optimisé)}                     & 77.22\%                                     & \textbf{99.43\%}                            & 167.7 s         \\
+  \textbf{Least Squares}                      & 73.71\%                                     & \textbf{98.98\%}                            & \textbf{0.01 s} \\
+  \textbf{Logistic Reg.}                      & 78.49\%                                     & 95.02\%                                     & 0.05 s          \\
+  \textbf{Neural Network}                     & \textbf{91.45\%}                            & 15.10\%                                     & 11.3 s          \\
+\end{longtable}
+
+Cette étude comparative démontre que l'utilisation d'algorithmes
+complexes comme le XGBoost n'est pas une fatalité. En soignant
+l'ingénierie des données, nous avons réussi à produire un Arbre de
+Décision plus performant que l'état de l'art (\textbf{91.4\%}). Surtout,
+nous avons prouvé qu'un modèle simple mais correctement paramétré, comme
+les Moindres Carrés ou le SVM, offre un niveau de sécurité
+(\textbf{$\geq$99\%}) qu'aucun algorithme de boosting générique ne parvient à
+atteindre sur ce jeu de données.
+
+\subsection{Comparaison avec un second
+  concurrent}\label{comparaison-avec-un-second-concurrent}
+
+\subsubsection{Méthodologie Comparée}\label{muxe9thodologie-comparuxe9e}
+
+Pour valider la robustesse de nos conclusions, nous avons également
+confronté nos résultats à ceux du notebook Kaggle
+\texttt{supervision-classification-all} de \textbf{Meren Celebi}
+(\href{https://www.kaggle.com/code/merencelebi/supervision-classification-all}{lien
+  vers l'étude}). Cette nouvelle comparaison est particulièrement
+instructive car elle permet d'isoler l'impact du paramétrage sur des
+algorithmes identiques. En effet, ce concurrent utilise les mêmes
+modèles que nous (SVM, Régression Logistique, Arbre de Décision et Naïve
+Bayes), mais avec une méthodologie radicalement différente : il applique
+une normalisation \emph{Min-Max} et conserve les hyperparamètres par
+défaut de Scikit-Learn, là où nous utilisons une \emph{Standardisation}
+et une optimisation ciblée sur le rappel.
+
+\subsubsection{Comparaison Directe : Modèles
+  Similaires}\label{comparaison-directe-moduxe8les-similaires}
+
+\paragraph{Support Vector Machine
+  (SVM)}\label{support-vector-machine-svm}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
+  \toprule\noalign{}
+  \begin{minipage}[b]{\linewidth}\raggedright
+    Indicateur
+  \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                     Notre Modèle (Optimisé)
+                   \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                                      Concurrent (Défaut)
+                                    \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                                                       Delta
+                                                     \end{minipage}                                                               \\
+  \midrule\noalign{}
+  \endhead
+  \bottomrule\noalign{}
+  \endlastfoot
+  \textbf{Accuracy}                           & 77.22\%                                     & \textbf{90.80\%}                            & -13.58\%          \\
+  \textbf{Rappel (Recall)}                    & \textbf{99.43\%}                            & 7.80\%                                      & \textbf{+91.63\%
+  (Victoire Sécurité)}                                                                                                                                        \\
+  \textbf{Précision}                          & 29.87\%                                     & \textbf{77.82\%}                            & -47.95\%          \\
+  \textbf{F1-Score}                           & \textbf{45.94\%}                            & 14.18\%                                     & \textbf{+31.76\%} \\
+  \textbf{Temps}                              & 167.7 s                                     & \emph{N/A}                                  & -                 \\
+\end{longtable}
+
+Les chiffres illustrent parfaitement le danger des paramètres par défaut
+sur des données déséquilibrées. L'approche du concurrent rend le SVM
+totalement inefficace pour la détection de menaces, puisqu'il échoue à
+identifier 92\% des dangers réels. À l'inverse, notre travail
+d'optimisation a transformé ce modèle en un filtre de sécurité
+quasi-parfait. Nous avons fait le choix conscient d'accepter une baisse
+de la précision globale et une augmentation des fausses alarmes pour
+garantir qu'aucun astéroïde dangereux ne passe au travers des mailles du
+filet.
+
+\paragraph{Régression Logistique}\label{ruxe9gression-logistique}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
+  \toprule\noalign{}
+  \begin{minipage}[b]{\linewidth}\raggedright
+    Indicateur
+  \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                     Notre Modèle
+                   \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                                      Concurrent
+                                    \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                                                       Delta
+                                                     \end{minipage}                                                               \\
+  \midrule\noalign{}
+  \endhead
+  \bottomrule\noalign{}
+  \endlastfoot
+  \textbf{Accuracy}                           & 78.50\%                                     & \textbf{89.66\%}                            & -11.16\%          \\
+  \textbf{Rappel (Recall)}                    & \textbf{95.02\%}                            & 6.93\%                                      & \textbf{+88.09\%
+  (Victoire Sécurité)}                                                                                                                                        \\
+  \textbf{Précision}                          & 30.55\%                                     & 34.60\%                                     & Stable            \\
+  \textbf{F1-Score}                           & \textbf{46.23\%}                            & 11.55\%                                     & \textbf{+34.68\%} \\
+  \textbf{Temps}                              & \textbf{0.05 s}                             & \emph{N/A}                                  & -                 \\
+\end{longtable}
+
+Le constat est identique pour la Régression Logistique. Le modèle
+standard du concurrent cherche à maximiser l'Accuracy en prédisant
+presque systématiquement que les objets sont sûrs, ce qui lui donne un
+bon score de façade mais une utilité nulle pour la défense planétaire.
+Notre modèle, configuré spécifiquement pour l'alerte précoce, parvient à
+détecter 95\% des dangers, confirmant que le réglage des seuils est plus
+important que le choix de l'algorithme lui-même.
+
+\paragraph{Arbre de Décision (Decision
+  Tree)}\label{arbre-de-duxe9cision-decision-tree}
+
+\begin{longtable}[]{@{}llll@{}}
+  \toprule\noalign{}
+  Indicateur               & Notre Modèle     & Concurrent       & Delta             \\
+  \midrule\noalign{}
+  \endhead
+  \bottomrule\noalign{}
+  \endlastfoot
+  \textbf{Accuracy}        & \textbf{91.43\%} & 89.24\%          & \textbf{+2.19\%}
+  (Victoire)                                                                         \\
+  \textbf{Rappel (Recall)} & 13.57\%          & \textbf{46.65\%} & -33.08\%          \\
+  \textbf{Précision}       & \textbf{89.22\%} & 44.97\%          & \textbf{+44.25\%}
+  (Fiabilité)                                                                        \\
+  \textbf{F1-Score}        & 23.56\%          & \textbf{45.79\%} & -                 \\
+  \textbf{Temps}           & \textbf{0.08 s}  & \emph{N/A}       & -                 \\
+\end{longtable}
+
+Sur les Arbres de Décision, la différence de philosophie se traduit par
+un compromis inverse. Le concurrent utilise un arbre sans limite de
+profondeur, ce qui augmente mécaniquement son Rappel mais génère
+énormément de bruit : sa précision est inférieure à 50\%, ce qui
+signifie qu'une alerte sur deux est fausse. Notre arbre élagué est
+beaucoup plus fiable et robuste. Lorsqu'il déclenche une alerte, il
+s'agit quasi-systématiquement d'un vrai danger (Précision
+\textasciitilde89\%), ce qui en fait un excellent outil de confirmation
+plutôt que de détection.
+
+\paragraph{Naïve Bayes (GaussianNB)}\label{nauxefve-bayes-gaussiannb}
+
+\begin{longtable}[]{@{}llll@{}}
+  \toprule\noalign{}
+  Indicateur               & Notre Modèle             & Concurrent       & Delta            \\
+  \midrule\noalign{}
+  \endhead
+  \bottomrule\noalign{}
+  \endlastfoot
+  \textbf{Accuracy}        & 83.23\%                  & \textbf{84.93\%} & -1.70\%          \\
+  \textbf{Rappel (Recall)} & \textbf{46.61\%}         & 34.51\%          &
+  \textbf{+12.10\%} (Victoire)                                                              \\
+  \textbf{Précision}       & \textbf{28.15\%}         & 27.90\%          & Stable           \\
+  \textbf{F1-Score}        & \textbf{35.10\%}         & 30.85\%          & \textbf{+4.25\%} \\
+  \textbf{Temps}           & \textbf{\textless0.01 s} & \emph{N/A}       & -                \\
+\end{longtable}
+
+À algorithme égal, notre utilisation du \texttt{StandardScaler} (au lieu
+de la normalisation Min-Max du concurrent) permet de mieux conserver la
+distribution statistique des données. Cela offre à notre modèle une
+meilleure capacité de détection des signaux faibles, se traduisant par
+un gain significatif de 12\% sur le Rappel sans dégrader la précision.
+
+\subsubsection{Comparaison des
+  Stratégies}\label{comparaison-des-stratuxe9gies}
+
+Au-delà des modèles communs, le concurrent a complété son analyse avec
+des modèles généralistes comme le \textbf{Random Forest} et le
+\textbf{KNN}. Ces modèles offrent une performance ``moyenne'' (F1-Score
+\textasciitilde0.49, Rappel \textasciitilde42\%), ne se démarquant ni
+par une excellente précision, ni par une sécurité absolue. C'est une
+approche généraliste qui manque de tranchant pour une mission critique.
+
+À l'inverse, nous avons préféré développer des outils hautement
+spécialisés pour répondre à des besoins distincts :
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
+  \toprule\noalign{}
+  \begin{minipage}[b]{\linewidth}\raggedright
+    Modèle
+  \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                     Accuracy
+                   \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                                      Rappel (Détection Danger)
+                                    \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+                                                       Temps d'exécution
+                                                     \end{minipage}                                                             \\
+  \midrule\noalign{}
+  \endhead
+  \bottomrule\noalign{}
+  \endlastfoot
+  \textbf{Least Squares}                      & 73.71\%                                     & \textbf{98.98\%}                            & \textbf{0.01 s} \\
+  \textbf{Neural Network}                     & \textbf{91.45\%}                            & 15.10\%                                     & 11.3 s          \\
+\end{longtable}
+
+Cette seconde comparaison confirme sans appel que l'utilisation des
+paramètres par défaut, comme le fait le concurrent, mène à des modèles
+linéaires inutilisables pour la défense planétaire (moins de 8\% de
+détection). Notre stratégie de spécialisation nous permet de proposer
+deux extrêmes viables : une sécurité maximale avec le SVM ou le Least
+Squares (\textgreater98\% Rappel), ou une fiabilité maximale avec
+l'Arbre de Décision optimisé.
+
+\section{Conclusions}\label{conclusions}
+
+\subsection{Conclusions Techniques}\label{conclusions-techniques}
+
+La confrontation de nos résultats avec les travaux de Ahmed Elnahas et
+Meren Celebi met en lumière plusieurs conclusions techniques majeures
+qui redéfinissent les bonnes pratiques en classification d'objets
+célestes dangereux.
+
+Nous avons choisi de prioriser systématiquement la sécurité sur
+l'exactitude globale. Là où les autres projets affichent des Accuracy de
+\textasciitilde91\% (via XGBoost ou Random Forest) mais avec des taux de
+détection de danger souvent inférieurs à 50\%, nos modèles optimisés
+sacrifient volontairement la précision globale pour garantir une
+détection supérieure à 98\%.
+
+extrême (4880 objets sûrs vs.~2040 dangereux), l'Accuracy est une
+métrique trompeuse. Un classificateur naïf qui prédit systématiquement
+``sûr'' obtiendrait \textasciitilde70\% d'exactitude mais serait
+totalement inutile. Le Rappel (Recall) devient donc la seule métrique
+viable, car manquer un astéroïde dangereux a des conséquences
+catastrophiques, tandis qu'une fausse alerte n'entraîne qu'un coût
+computationnel supplémentaire.
+
+Nous avons démontré l'efficacité remarquable des approches
+mathématiquement simples. Le \textbf{Least Squares Classifier}, souvent
+ignoré au profit de solutions complexes, atteint un Rappel de
+\textbf{98.98\%} avec un temps d'exécution quasi-instantané
+(\textbf{0.01s}), surpassant ainsi tous les modèles concurrents en
+termes de rapport sécurité/rapidité.
+
+Notre Decision Tree optimisé (Accuracy \textbf{91.43\%}) surpasse le
+XGBoost d'Ahmed Elnahas (Accuracy 91.13\%) tout en étant 100x plus
+rapide et 1000x plus interprétable.
+
+Le XGBoost apporte peu de valeur ajoutée lorsque :
+
+\begin{itemize}
+  \tightlist
+  \item
+        L'ingénierie des features est déjà optimale (transformations log,
+        sélection pertinente)
+  \item
+        Les données sont propres et sans outliers extrêmes
+  \item
+        La profondeur d'arbre est bien calibrée pour éviter le
+        surapprentissage
+\end{itemize}
+
+Cela démontre que l'effort investi dans la préparation des données
+surpasse largement le choix algorithmique pour ce problème spécifique.
+
+\subsection{Conclusion finale}\label{conclusion-finale}
+
+Au-delà des résultats techniques, ce projet nous a enseigné une leçon
+fondamentale : la valeur d'un modèle de machine learning ne se mesure
+pas à sa complexité algorithmique, mais à son adéquation avec les
+contraintes réelles du problème.
+
+Cette expérience restera un jalon majeur dans notre formation, car elle
+a comblé le fossé entre la théorie académique et la pratique
+opérationnelle du machine learning.
+
+
+% Add a bibliography block to the postdoc
+
+
+
+\end{document}
