@@ -1,222 +1,85 @@
 # NASA Near-Earth Objects Classification Project
 
+> Projet du cours **IFT712 - Techniques d'apprentissage** | Université de Sherbrooke | Session Automne 2025
+
 ## Vue d'ensemble
 
-Ce projet est un travail pratique du cours **IFT712 - Techniques d'apprentissage** à l'Université de Sherbrooke. L'objectif principal est de mettre en application les concepts fondamentaux de l'apprentissage automatique en implémentant et comparant six méthodes de classification distinctes sur un jeu de données réel provenant de la NASA.
+Implémentation et comparaison de **6 algorithmes de classification** sur le jeu de données [NASA Nearest Earth Objects](https://www.kaggle.com/datasets/sameepvani/nasa-nearest-earth-objects) contenant plus de **300 000 enregistrements** d'astéroïdes et comètes.
 
-## Objectifs
+## Algorithmes Implémentés
 
-- Implémenter six algorithmes de classification différents
-- Évaluer et comparer les performances de chaque modèle
-- Analyser les forces et les faiblesses de chaque approche
-- Fournir une analyse comparative détaillée basée sur des métriques standards
-
-## Jeu de données
-
-### Description
-
-Le projet utilise le jeu de données **« NASA - Nearest Earth Objects »** disponible sur [Kaggle](https://www.kaggle.com/datasets/sameepvani/nasa-nearest-earth-objects). Ce jeu de données compile des informations relatives aux **objets proches de la Terre (NEO - Near-Earth Objects)** certifiés par la NASA, comprenant plus de **300 000 enregistrements** concernant les astéroïdes et comètes détectés par les systèmes d'observation de la NASA.
-
-### Structure et Contenu
-
-Le jeu de données contient :
-
-- **Paramètres orbitaux** : distances relatives par rapport à la Terre, vitesses orbitales et vélocités absolues
-- **Caractéristiques physiques** : diamètres estimés, albédos et propriétés de surface
-- **Approches rapprochées** : résumés des approches et dates des événements
-- **Évaluation des risques** : probabilités d'impact et classifications de danger
-- **Métadonnées de découverte** : dates de découverte et observatoires ayant effectué les observations
-
-### Sources et Instruments
-
-Les données proviennent de sources institutionnelles majeures :
-
-#### Sources principales
-- **Centre for Near-Earth Object Studies (CNEOS)** - JPL/NASA
-- **Minor Planet Center (MPC)** - Union Astronomique Internationale
-
-#### Instruments de détection
-- **Catalina Sky Survey (CSS)** - Trois télescopes (Mount Lemmon, Catalina, Siding Spring)
-- **Spacewatch Program** - Kitt Peak Observatory
-- **WISE/NEOWISE** - Télescope spatial infrarouge
-- **Pan-STARRS** - Système de sondage panoramique
-- **LONEOS** - Lowell Observatory Near-Earth Object Search
-
-## Méthodes de Classification
-
-Le projet implémente les six méthodes suivantes :
-
-1. **Vecteur à Support**
+1. **SVM** (Support Vector Machine)
 2. **Arbre de Décision**
 3. **Réseaux de Neurones**
-4. **Méthode des Moindres Carrés**
+4. **Moindres Carrés**
 5. **Bayes Naïf**
 6. **Régression Logistique**
 
 ## Métriques d'Évaluation
 
-Chaque modèle est évalué selon les métriques standards :
+Précision • Rappel • F1-Score • AUC-ROC • Matrice de confusion
 
-- **Précision** : proportion de prédictions positives correctes
-- **Rappel** : proportion de vrais positifs identifiés
-- **F1-Score** : moyenne harmonique de la précision et du rappel
-- **Area Under ROC Curve (AUC-ROC)** : performance globale du modèle
-- **Matrice de confusion** : analyse détaillée des classifications
-
-## Utilisation
+## Installation & Utilisation
 
 ### Prérequis
-
-```
+```bash
 Python >= 3.8
-pandas
-numpy
-scikit-learn
-matplotlib
-seaborn
-jupyter
-pyyaml
 ```
 
 ### Installation
-
 ```bash
-# Cloner le repository
-git clone <https://github.com/RobinBecard/IFT712_Project.git>
+git clone https://github.com/RobinBecard/IFT712_Project.git
 cd IFT712_Project
-
-# Installer les dépendances
 pip install -r requirements.txt
 ```
 
+### Exécution
+```bash
+jupyter notebook notebooks/IFT712_Project.ipynb
+```
+
 ### Configuration
-
-Le projet utilise un système de configuration centralisé basé sur YAML. Tous les paramètres de configuration se trouvent dans le fichier `config.yaml` à la racine du projet.
-
-#### Accès rapide à la configuration
+Le fichier `config.yaml` centralise tous les paramètres du projet.
 
 ```python
 from src.config import get_config
-
-# Obtenir l'instance de configuration
 config = get_config()
-
-# Accéder aux paramètres
 dataset_path = config.get_path('paths.dataset')
-test_size = config.get_param('preprocessing.test_size')
-```
-
-### Exécution
-
-```bash
-# Lancer le notebook Jupyter
-jupyter notebook notebooks/IFT712_Project.ipynb
 ```
 
 ## Structure du Projet
 
 ```
 IFT712_Project/
-+-- README.md                          # Documentation principale du projet
-+-- config.yaml                        # Fichier de configuration centralisé
-+-- .gitignore                         # Configuration Git
-+-- requirements.txt                   # Dépendances Python
-+-- setup.py                           # Configuration du projet Python
-+-- IFT712_Project.pdf                 # Rapport final complet en pdf
-|
-+-- src/                               # Code source principal
-|   +-- __init__.py
-|   +-- config.py                      # ConfigManager - Gestion de la configuration
-|   +-- data/                          # Module de gestion des données
-|   |   +-- __init__.py
-|   |   +-- loader.py                  # Chargement des données
-|   |   +-- preprocessor.py            # Prétraitement et nettoyage
-|   +-- models/                        # Module des modèles de classification
-|   |   +-- __init__.py
-|   |   +-- base_classifier.py         # Classe abstraite de base
-|   |   +-- svm_classifier.py          # Implémentation SVM
-|   |   +-- decision_tree_classifier.py  # Implémentation Decision Tree
-|   |   +-- neural_network_classifier.py # Implémentation Neural Network
-|   |   +-- least_squares_classifier.py          # Implémentation Least Squares
-|   |   +-- naive_bayes_classifier.py   # Implémentation Naive Bayes
-|   |   +-- logistic_regression_classifier.py # Implémentation Logistic Regression
-|   +-- evaluation/                    # Module d'évaluation et comparaison
-|   |   +-- __init__.py
-|   |   +-- metrics.py                 # Calcul des métriques
-|   |   +-- comparison.py              # Comparaison des modèles
-|   +-- utils/                         # Utilitaires
-|       +-- __init__.py
-|       +-- visualization.py           # Génération de visualisations
-|       +-- utils.py                 # Fonctions utilitaires
-|
-+-- notebooks/                         # Notebooks Jupyter
-|   +-- IFT712_Project.ipynb           # Notebook principal du projet
-|
-+-- datasets/                          # Répertoire de données
-|   +-- neo.csv                        # Jeu de données principal
-|
-+-- results/                           # Résultats et artefacts
-|   +-- models/                        # Modèles entraînés (sérialisés)
-|   +-- metrics/                       # Fichiers de métriques (CSV, JSON)
-|   +-- plots/                         # Visualisations générées
-|   +-- comparisons/                   # Analyses comparatives
-|
-
-
+├── README.md
+├── config.yaml                    # Configuration centralisée
+├── requirements.txt
+├── IFT712_Project.pdf            # Rapport final
+├── src/
+│   ├── config.py                 # Gestionnaire de configuration
+│   ├── data/                     # Chargement et prétraitement
+│   ├── models/                   # 6 algorithmes de classification
+│   └── utils/                    # Visualisations et utilitaires
+├── notebooks/
+│   └── IFT712_Project.ipynb      # Notebook principal
+├── datasets/
+│   └── neo.csv                   # Données NASA NEO
+└── results/                      # Modèles, métriques, graphiques
 ```
 
 ## Contenu du Notebook
 
-Le notebook est structuré selon les sections suivantes :
-
-### 1. Contexte
-Introduction au cours IFT712 et objectifs du projet final.
-
-### 2. Jeu de données
-- Présentation détaillée du jeu de données NASA NEO
-- Description de la structure et du contenu
-- Sources de données et instruments de détection
-- Flux de travail de collecte et validation
-
-### 3. Implémentation
-- Chargement et prétraitement des données
-- Exploration et visualisation des données
-- Implémentation des six algorithmes de classification
-- Entraînement et évaluation de chaque modèle
-- Analyse comparative des résultats
-
-### 4. Résultats
-- Comparaison des performances
-- Visualisations des résultats
-- Analyse critique des force et faiblesses
-
-### 5. Conclusions
-- Synthèse des découvertes
-- Recommandations pour les développements futurs
-
-## Analyse Comparative
-
-Une analyse détaillée des performances permet d'identifier :
-
-- Les modèles les plus performants pour cette application
-- Les compromis entre précision et rappel
-- L'impact de la complexité du modèle sur les performances
-- Les cas d'usage optimaux pour chaque approche
+1. **Contexte** - Introduction et objectifs
+2. **Jeu de données** - Exploration et analyse des données NASA NEO
+3. **Implémentation** - Développement et entraînement des 6 modèles
+4. **Résultats** - Comparaison des performances et visualisations
+5. **Conclusions** - Synthèse et recommandations
 
 ## Ressources
 
-- [Kaggle Dataset](https://www.kaggle.com/datasets/sameepvani/nasa-nearest-earth-objects)
+- [Dataset Kaggle](https://www.kaggle.com/datasets/sameepvani/nasa-nearest-earth-objects)
 - [NASA CNEOS](https://cneos.jpl.nasa.gov/)
 - [Minor Planet Center](https://www.minorplanetcenter.net/)
-- [scikit-learn Documentation](https://scikit-learn.org/)
-
-## Licence
-
-Ce projet est développé à titre éducatif pour le cours IFT712 de l'Université de Sherbrooke.
-
-## Auteurs
-
-Réalisé dans le cadre du programme de Master en Intelligence Artificielle et Science des Données à l'Université de Sherbrooke.
 
 ---
 
