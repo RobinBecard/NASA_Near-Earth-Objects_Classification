@@ -225,7 +225,7 @@ class NEODataPreprocessor:
         """Print summary of the data split."""
         summary = self.get_split_summary()
 
-        print(f"✓ Data split:")
+        print(f"Data split:")
         print(f"  - Train: {summary['n_train']} samples")
         print(f"  - Test:  {summary['n_test']} samples")
         print(f"  - Number of features: {summary['n_features']}")
@@ -243,4 +243,4 @@ class NEODataPreprocessor:
               f"mean={train_stats['mean']:.3f}, std={train_stats['std']:.3f}")
         print(f"  - X_test:  min={test_stats['min']:.3f}, max={test_stats['max']:.3f}, "
               f"mean={test_stats['mean']:.3f}, std={test_stats['std']:.3f}")
-        print("  → Data is centered around 0 with std ≈ 1")
+        print("  - Data is centered around 0 with std ~ 1")

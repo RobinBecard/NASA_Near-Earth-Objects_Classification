@@ -158,16 +158,16 @@ class BaseClassifier(ABC):
             metrics (dict): Dictionary of metrics from evaluate().
         """
         print(f"\nRESULTS - {metrics['model_name']}:")
-        print("  ─" * 30)
-        print(f"  • Accuracy:  {metrics['accuracy']:.4f}")
-        print(f"  • Precision: {metrics['precision']:.4f}")
-        print(f"  • Recall:    {metrics['recall']:.4f}")
-        print(f"  • F1-Score:  {metrics['f1_score']:.4f}")
+        print("  -" * 30)
+        print(f"  - Accuracy:  {metrics['accuracy']:.4f}")
+        print(f"  - Precision: {metrics['precision']:.4f}")
+        print(f"  - Recall:    {metrics['recall']:.4f}")
+        print(f"  - F1-Score:  {metrics['f1_score']:.4f}")
 
         if isinstance(metrics['auc_roc'], (int, float)):
-            print(f"  • AUC-ROC:   {metrics['auc_roc']:.4f}")
+            print(f"  - AUC-ROC:   {metrics['auc_roc']:.4f}")
         else:
-            print(f"  • AUC-ROC:   {metrics['auc_roc']}")
+            print(f"  - AUC-ROC:   {metrics['auc_roc']}")
 
         print("\n  Confusion matrix:")
         cm = metrics['confusion_matrix']
@@ -204,7 +204,7 @@ class BaseClassifier(ABC):
             if y_true is not None:
                 true_label = y_true.iloc[i] if hasattr(
                     y_true, 'iloc') else y_true[i]
-                status = "✓" if pred == true_label else "✗"
+                status = "OK" if pred == true_label else "X"
                 result_line = f"    {status} " + \
                     result_line[4:] + f", True={true_label}"
 

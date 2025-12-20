@@ -176,7 +176,7 @@ class ModelManager:
                 'confusion_matrix': metrics['confusion_matrix']  # Last run
             }
 
-            print(f"  ✓ {model_name} completed!")
+            print(f"  {model_name} completed!")
 
         print("\nCOMPARISON COMPLETED\n")
         return self.results
@@ -335,7 +335,7 @@ class ModelManager:
         # Save if requested
         if save_path:
             plt.savefig(save_path, dpi=300, bbox_inches='tight')
-            print(f"\n✓ Figure saved to: {save_path}")
+            print(f"\nFigure saved to: {save_path}")
 
         plt.show()
 
@@ -545,7 +545,7 @@ class ModelManager:
         # Store optimized parameters
         self.optimized_params[model_name] = best_params
 
-        print(f"\n✓ Optimization completed in {optimization_time:.2f}s")
+        print(f"\nOptimization completed in {optimization_time:.2f}s")
         print(f"\nBest parameters for {model_name}:")
         self._display_params_as_yaml(model_key, best_params)
 

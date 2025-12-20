@@ -80,7 +80,7 @@ class NEODataLoader:
         """
         summary = self.get_summary()
         print(
-            f"✓ Data loaded: {summary['n_rows']} rows, {summary['n_columns']} columns")
+            f"Data loaded: {summary['n_rows']} rows, {summary['n_columns']} columns")
         print(f"  - Columns: {summary['columns']}")
         print(f"  - Memory usage: {summary['memory_usage']:.2f} MB")
 

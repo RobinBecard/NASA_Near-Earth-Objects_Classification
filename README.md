@@ -117,50 +117,50 @@ jupyter notebook notebooks/IFT712_Project.ipynb
 
 ```
 IFT712_Project/
-├── README.md                          # Documentation principale du projet
-├── config.yaml                        # Fichier de configuration centralisé
-├── .gitignore                         # Configuration Git
-├── requirements.txt                   # Dépendances Python
-├── setup.py                           # Configuration du projet Python
-├── IFT712_Project.pdf                 # Rapport final complet en pdf
-│
-├── src/                               # Code source principal
-│   ├── __init__.py
-│   ├── config.py                      # ConfigManager - Gestion de la configuration
-│   ├── data/                          # Module de gestion des données
-│   │   ├── __init__.py
-│   │   ├── loader.py                  # Chargement des données
-│   │   └── preprocessor.py            # Prétraitement et nettoyage
-│   ├── models/                        # Module des modèles de classification
-│   │   ├── __init__.py
-│   │   ├── base_classifier.py         # Classe abstraite de base
-│   │   ├── svm_classifier.py          # Implémentation SVM
-│   │   ├── decision_tree_classifier.py  # Implémentation Decision Tree
-│   │   ├── neural_network_classifier.py # Implémentation Neural Network
-│   │   ├── least_squares_classifier.py          # Implémentation Least Squares
-│   │   ├── naive_bayes_classifier.py   # Implémentation Naive Bayes
-│   │   └── logistic_regression_classifier.py # Implémentation Logistic Regression
-│   ├── evaluation/                    # Module d'évaluation et comparaison
-│   │   ├── __init__.py
-│   │   ├── metrics.py                 # Calcul des métriques
-│   │   └── comparison.py              # Comparaison des modèles
-│   └── utils/                         # Utilitaires
-│       ├── __init__.py
-│       ├── visualization.py           # Génération de visualisations
-│       └── utils.py                 # Fonctions utilitaires
-│
-├── notebooks/                         # Notebooks Jupyter
-│   └── IFT712_Project.ipynb           # Notebook principal du projet
-│
-├── datasets/                          # Répertoire de données
-│   └── neo.csv                        # Jeu de données principal
-│
-├── results/                           # Résultats et artefacts
-│   ├── models/                        # Modèles entraînés (sérialisés)
-│   ├── metrics/                       # Fichiers de métriques (CSV, JSON)
-│   ├── plots/                         # Visualisations générées
-│   └── comparisons/                   # Analyses comparatives
-│
++-- README.md                          # Documentation principale du projet
++-- config.yaml                        # Fichier de configuration centralisé
++-- .gitignore                         # Configuration Git
++-- requirements.txt                   # Dépendances Python
++-- setup.py                           # Configuration du projet Python
++-- IFT712_Project.pdf                 # Rapport final complet en pdf
+|
++-- src/                               # Code source principal
+|   +-- __init__.py
+|   +-- config.py                      # ConfigManager - Gestion de la configuration
+|   +-- data/                          # Module de gestion des données
+|   |   +-- __init__.py
+|   |   +-- loader.py                  # Chargement des données
+|   |   +-- preprocessor.py            # Prétraitement et nettoyage
+|   +-- models/                        # Module des modèles de classification
+|   |   +-- __init__.py
+|   |   +-- base_classifier.py         # Classe abstraite de base
+|   |   +-- svm_classifier.py          # Implémentation SVM
+|   |   +-- decision_tree_classifier.py  # Implémentation Decision Tree
+|   |   +-- neural_network_classifier.py # Implémentation Neural Network
+|   |   +-- least_squares_classifier.py          # Implémentation Least Squares
+|   |   +-- naive_bayes_classifier.py   # Implémentation Naive Bayes
+|   |   +-- logistic_regression_classifier.py # Implémentation Logistic Regression
+|   +-- evaluation/                    # Module d'évaluation et comparaison
+|   |   +-- __init__.py
+|   |   +-- metrics.py                 # Calcul des métriques
+|   |   +-- comparison.py              # Comparaison des modèles
+|   +-- utils/                         # Utilitaires
+|       +-- __init__.py
+|       +-- visualization.py           # Génération de visualisations
+|       +-- utils.py                 # Fonctions utilitaires
+|
++-- notebooks/                         # Notebooks Jupyter
+|   +-- IFT712_Project.ipynb           # Notebook principal du projet
+|
++-- datasets/                          # Répertoire de données
+|   +-- neo.csv                        # Jeu de données principal
+|
++-- results/                           # Résultats et artefacts
+|   +-- models/                        # Modèles entraînés (sérialisés)
+|   +-- metrics/                       # Fichiers de métriques (CSV, JSON)
+|   +-- plots/                         # Visualisations générées
+|   +-- comparisons/                   # Analyses comparatives
+|
 
 
 ```

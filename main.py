@@ -47,7 +47,7 @@ def main():
     # )
 
     # model.train(X_train, y_train)
-    # print("✓ Model trained successfully!")
+    # print("Model trained successfully!")
 
     # # STEP 4: EVALUATION
     # print("\n[4] Evaluating model...")
@@ -65,10 +65,10 @@ def main():
 
     # best_params = model.optimize(X_train, y_train, param_grid)
 
-    # print("✓ Hyperparameter optimization completed!")
+    # print("Hyperparameter optimization completed!")
     # print("Best Parameters found:")
     # for param, value in best_params.items():
-    #     print(f"  • {param}: {value}")
+    #     print(f"  - {param}: {value}")
     # # Re-evaluate with optimized model
     # print("\nRe-evaluating optimized model...")
     # optimized_metrics = model.evaluate(X_test, y_test)
