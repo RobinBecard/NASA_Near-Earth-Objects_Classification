@@ -3,7 +3,7 @@ from sklearn.metrics import (
     accuracy_score, precision_score, recall_score, f1_score,
     roc_auc_score, confusion_matrix
 )
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
@@ -45,9 +45,9 @@ class BaseClassifier(ABC):
             self._build_model()
         self.model.fit(X_train, y_train)
 
-    def optimize(self, X_train, y_train, param_grid, cv=3, scoring='roc_auc', n_jobs=-1, verbose=0):
+    def optimize(self, X_train, y_train, param_grid, cv=3, scoring='roc_auc', n_jobs=-1, verbose=0, search_method='grid', n_iter=10):
         """
-        Hyperparameter search using GridSearchCV.
+        Hyperparameter search using GridSearchCV or RandomizedSearchCV.
 
         Args:
             X_train: Training features.
@@ -57,31 +57,54 @@ class BaseClassifier(ABC):
             scoring: Scoring metric ('roc_auc' by default, falls back to 'f1' if predict_proba not available).
             n_jobs: Number of parallel jobs (-1 uses all cores).
             verbose: Verbosity level.
+            search_method: 'grid' for GridSearchCV or 'random' for RandomizedSearchCV.
+            n_iter: Number of iterations for RandomizedSearchCV (ignored for GridSearchCV).
 
         Returns:
-            dict: Best parameters found by GridSearchCV.
+            dict: Best parameters found by the search.
         """
         if self.model is None:
             self._build_model()
 
-        # Check if model supports predict_proba for roc_auc
         if scoring == 'roc_auc' and not hasattr(self.model, 'predict_proba'):
             print(
-                f"⚠️  Model {self.name} doesn't support predict_proba, using 'f1' instead of 'roc_auc'")
+                f"Model {self.name} doesn't support predict_proba, using 'f1' instead of 'roc_auc'")
             scoring = 'f1'
 
-        print(
-            f"Building GridSearchCV with cv={cv}, scoring={scoring}, n_jobs={n_jobs}, verbose={verbose}")
-        print(f"Training data shape: {X_train.shape}")
+        if search_method == 'random':
+            from itertools import product
+            total_combinations = 1
+            for param_values in param_grid.values():
+                total_combinations *= len(param_values)
 
-        search = GridSearchCV(
-            self.model,
-            param_grid,
-            cv=cv,
-            scoring=scoring,
-            n_jobs=n_jobs,
-            verbose=verbose
-        )
+            print(
+                f"Building RandomizedSearchCV with n_iter={n_iter}/{total_combinations}, cv={cv}, scoring={scoring}")
+            print(f"Training data shape: {X_train.shape}")
+
+            search = RandomizedSearchCV(
+                self.model,
+                param_grid,
+                n_iter=n_iter,
+                cv=cv,
+                scoring=scoring,
+                n_jobs=n_jobs,
+                verbose=verbose,
+                random_state=42
+            )
+        else:
+            print(
+                f"Building GridSearchCV with cv={cv}, scoring={scoring}, n_jobs={n_jobs}, verbose={verbose}")
+            print(f"Training data shape: {X_train.shape}")
+
+            search = GridSearchCV(
+                self.model,
+                param_grid,
+                cv=cv,
+                scoring=scoring,
+                n_jobs=n_jobs,
+                verbose=verbose
+            )
+
         search.fit(X_train, y_train)
 
         print(f"Best score: {search.best_score_:.4f}")
@@ -135,16 +158,16 @@ class BaseClassifier(ABC):
             metrics (dict): Dictionary of metrics from evaluate().
         """
         print(f"\nRESULTS - {metrics['model_name']}:")
-        print("  ─" * 30)
-        print(f"  • Accuracy:  {metrics['accuracy']:.4f}")
-        print(f"  • Precision: {metrics['precision']:.4f}")
-        print(f"  • Recall:    {metrics['recall']:.4f}")
-        print(f"  • F1-Score:  {metrics['f1_score']:.4f}")
+        print("  -" * 30)
+        print(f"  - Accuracy:  {metrics['accuracy']:.4f}")
+        print(f"  - Precision: {metrics['precision']:.4f}")
+        print(f"  - Recall:    {metrics['recall']:.4f}")
+        print(f"  - F1-Score:  {metrics['f1_score']:.4f}")
 
         if isinstance(metrics['auc_roc'], (int, float)):
-            print(f"  • AUC-ROC:   {metrics['auc_roc']:.4f}")
+            print(f"  - AUC-ROC:   {metrics['auc_roc']:.4f}")
         else:
-            print(f"  • AUC-ROC:   {metrics['auc_roc']}")
+            print(f"  - AUC-ROC:   {metrics['auc_roc']}")
 
         print("\n  Confusion matrix:")
         cm = metrics['confusion_matrix']
@@ -181,7 +204,7 @@ class BaseClassifier(ABC):
             if y_true is not None:
                 true_label = y_true.iloc[i] if hasattr(
                     y_true, 'iloc') else y_true[i]
-                status = "✓" if pred == true_label else "✗"
+                status = "OK" if pred == true_label else "X"
                 result_line = f"    {status} " + \
                     result_line[4:] + f", True={true_label}"
 

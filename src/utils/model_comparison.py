@@ -36,15 +36,18 @@ class ModelManager:
         self.config = get_config()
         self.optimization_grids = self._load_optimization_grids()
 
-    def _load_optimization_grids(self):
+    def _load_optimization_grids(self, config_file='optimization_grids.yaml'):
         """
         Load optimization grids from optimization_grids.yaml.
+
+        Args:
+            config_file: Name of the optimization config file
 
         Returns:
             dict: Optimization configuration and parameter grids
         """
         try:
-            with open('optimization_grids.yaml', 'r', encoding='utf-8') as f:
+            with open(config_file, 'r', encoding='utf-8') as f:
                 grids_config = yaml.safe_load(f)
             return grids_config
         except FileNotFoundError:
@@ -173,7 +176,7 @@ class ModelManager:
                 'confusion_matrix': metrics['confusion_matrix']  # Last run
             }
 
-            print(f"  ✓ {model_name} completed!")
+            print(f"  {model_name} completed!")
 
         print("\nCOMPARISON COMPLETED\n")
         return self.results
@@ -271,7 +274,7 @@ class ModelManager:
                 if not (np.isnan(mean) and np.isnan(std)):
                     methodes.append(model_name)
                     means.append(mean)
-                    stds.append(std)
+                    stds.append(0 if np.isnan(std) else std)
 
             if not methodes:
                 ax.set_visible(False)
@@ -279,12 +282,15 @@ class ModelManager:
 
             x = np.arange(len(methodes))
 
-            # Create bars
+            stds_array = np.array(stds)
+            stds_array = np.nan_to_num(stds_array, nan=0.0)
+
             bars = ax.bar(
                 x,
                 means,
-                yerr=stds,
+                yerr=stds_array,
                 capsize=5,
+                error_kw={'elinewidth': 2, 'capthick': 2},
                 color=colors[:len(methodes)],
                 alpha=0.8,
                 edgecolor='black',
@@ -329,7 +335,7 @@ class ModelManager:
         # Save if requested
         if save_path:
             plt.savefig(save_path, dpi=300, bbox_inches='tight')
-            print(f"\n✓ Figure saved to: {save_path}")
+            print(f"\nFigure saved to: {save_path}")
 
         plt.show()
 
@@ -437,18 +443,21 @@ class ModelManager:
 
         return self.results
 
-    def optimize_model(self, model_name, X_train, y_train, param_grid=None, cv=None, scoring=None, n_jobs=None):
+    def optimize_model(self, model_name, X_train, y_train, param_grid=None, cv=None, scoring=None, n_jobs=None, search_method=None, n_iter=None, sample_size=None):
         """
-        Optimize hyperparameters for a single model using GridSearchCV.
+        Optimize hyperparameters for a single model using GridSearchCV or RandomizedSearchCV.
 
         Args:
             model_name: Name of the model to optimize (must be in self.models)
             X_train: Training features
             y_train: Training labels
-            param_grid: Custom parameter grid (if None, uses optimization_grids.yaml)
-            cv: Number of cross-validation folds (if None, uses optimization_grids.yaml)
-            scoring: Scoring metric (if None, uses optimization_grids.yaml)
-            n_jobs: Number of parallel jobs (if None, uses optimization_grids.yaml)
+            param_grid: Custom parameter grid (if None, uses optimization config)
+            cv: Number of cross-validation folds (if None, uses optimization config)
+            scoring: Scoring metric (if None, uses optimization config)
+            n_jobs: Number of parallel jobs (if None, uses optimization config)
+            search_method: 'grid' or 'random' (if None, uses optimization config)
+            n_iter: Number of iterations for random search (if None, uses optimization config)
+            sample_size: Fraction of data to use (0.0-1.0). If None, uses optimization config.
 
         Returns:
             dict: Best parameters found
@@ -461,46 +470,82 @@ class ModelManager:
         model = self.models[model_name]
         model_key = self._get_model_key(model_name)
 
-        # Get param_grid from optimization_grids.yaml if not provided
         if param_grid is None:
             if model_key not in self.optimization_grids.get('param_grids', {}):
                 print(
-                    f"Error: No param_grid found for '{model_name}' in optimization_grids.yaml")
+                    f"Error: No param_grid found for '{model_name}' in optimization config")
                 return None
             param_grid = self.optimization_grids['param_grids'][model_key]
 
-        # Get optimization config
         opt_config = self.optimization_grids.get('optimization_config', {})
         cv = cv or opt_config.get('cv_folds', 5)
         scoring = scoring or opt_config.get('scoring', 'accuracy')
         n_jobs = n_jobs or opt_config.get('n_jobs', -1)
         verbose = opt_config.get('verbose', 1)
 
-        print(f"\nOPTIMIZING: {model_name}\n")
+        search_strategies = opt_config.get('search_strategies', {})
+        search_method = search_method or search_strategies.get(
+            model_key, 'grid')
+
+        if search_method == 'random':
+            random_iters = opt_config.get('random_search_iterations', {})
+            n_iter = n_iter or random_iters.get(model_key, 10)
+
+        # Handle data sampling (model-specific)
+        if sample_size is None:
+            sample_sizes = opt_config.get('sample_sizes', {})
+            sample_size = sample_sizes.get(model_key, None)
+
+        if sample_size is not None and 0.0 < sample_size < 1.0:
+            from sklearn.model_selection import train_test_split
+            X_sample, _, y_sample, _ = train_test_split(
+                X_train, y_train,
+                train_size=sample_size,
+                stratify=y_train,
+                random_state=42
+            )
+            print(f"\nOPTIMIZING: {model_name}")
+            print(
+                f"Using {sample_size*100:.0f}% of training data ({len(X_sample)}/{len(X_train)} samples)")
+        else:
+            X_sample = X_train
+            y_sample = y_train
+            print(f"\nOPTIMIZING: {model_name}")
+            print(f"Using full training dataset ({len(X_train)} samples)")
+
+        print(f"Search method: {search_method.upper()}")
         print(f"Cross-validation folds: {cv}")
         print(f"Scoring metric: {scoring}")
         print(f"Parameter grid: {len(param_grid)} parameters")
 
-        # Calculate total combinations
         from itertools import product
         total_combinations = 1
         for param_values in param_grid.values():
             total_combinations *= len(param_values)
-        print(f"Total combinations to test: {total_combinations}")
-        print(f"\nStarting grid search...\n")
 
-        # Run optimization
+        if search_method == 'random':
+            print(f"Total possible combinations: {total_combinations}")
+            print(f"Testing {n_iter} random combinations")
+            estimated_time = n_iter * cv
+        else:
+            print(f"Total combinations to test: {total_combinations}")
+            estimated_time = total_combinations * cv
+
+        print(f"Estimated CV iterations: {estimated_time}")
+        print(f"\nStarting optimization...\n")
+
         start_time = time.time()
         best_params = model.optimize(
-            X_train, y_train, param_grid,
-            cv=cv, scoring=scoring, n_jobs=n_jobs, verbose=verbose
+            X_sample, y_sample, param_grid,
+            cv=cv, scoring=scoring, n_jobs=n_jobs, verbose=verbose,
+            search_method=search_method, n_iter=n_iter if search_method == 'random' else 10
         )
         optimization_time = time.time() - start_time
 
         # Store optimized parameters
         self.optimized_params[model_name] = best_params
 
-        print(f"\n✓ Optimization completed in {optimization_time:.2f}s")
+        print(f"\nOptimization completed in {optimization_time:.2f}s")
         print(f"\nBest parameters for {model_name}:")
         self._display_params_as_yaml(model_key, best_params)
 
