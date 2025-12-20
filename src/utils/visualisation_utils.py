@@ -78,8 +78,8 @@ class VisualizationUtils:
 
         cm = confusion_matrix(y_test, y_pred)
         sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax1,
-                    xticklabels=['Non-Dangeureux', 'Dangeureux'],
-                    yticklabels=['Non-Dangeureux', 'Dangeureux'])
+                    xticklabels=['Non-Dangereux', 'Dangereux'],
+                    yticklabels=['Non-Dangereux', 'Dangereux'])
         ax1.set_title("Matrice de Confusion")
         ax1.set_xlabel("Prédiction")
         ax1.set_ylabel("Vrai label")
