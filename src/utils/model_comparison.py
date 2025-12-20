@@ -633,7 +633,7 @@ class ModelManager:
             print("\n>>> Phase 1 : Hyperparameter optimization")
             self.optimize_all_models(X_train, y_train)
         
-        print("\n>>> Phase 2 : Final training final and evaluation")
+        print("\n>>> Phase 2 : Final training and evaluation")
         self.train_and_evaluate_all(X_train, y_train, X_test, y_test, n_runs=1)
         
         self.display_results_table()
