@@ -68,7 +68,7 @@ class VisualizationUtils:
     @staticmethod
     def plot_model_performance(model_obj, X_test, y_test):
         """
-        Affiche la matrice de confusion et la courbe ROC sur une seule ligne.
+        Displays the confusion matrix and ROC curve on a single row.
         """
         y_pred = model_obj.predict(X_test)
         model_name = model_obj.name
