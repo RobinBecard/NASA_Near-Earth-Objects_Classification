@@ -274,7 +274,7 @@ class ModelManager:
                 if not (np.isnan(mean) and np.isnan(std)):
                     methodes.append(model_name)
                     means.append(mean)
-                    stds.append(std)
+                    stds.append(0 if np.isnan(std) else std)
 
             if not methodes:
                 ax.set_visible(False)
@@ -282,12 +282,15 @@ class ModelManager:
 
             x = np.arange(len(methodes))
 
-            # Create bars
+            stds_array = np.array(stds)
+            stds_array = np.nan_to_num(stds_array, nan=0.0)
+
             bars = ax.bar(
                 x,
                 means,
-                yerr=stds,
+                yerr=stds_array,
                 capsize=5,
+                error_kw={'elinewidth': 2, 'capthick': 2},
                 color=colors[:len(methodes)],
                 alpha=0.8,
                 edgecolor='black',

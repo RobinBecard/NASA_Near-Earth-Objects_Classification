@@ -1,5 +1,5 @@
 optimization_config:
-  cv_folds: 3
+  cv_folds: 5
   scoring: "roc_auc"
   n_jobs: -1
   verbose: 1
@@ -9,11 +9,11 @@ optimization_config:
     logistic_regression: "grid"
     naive_bayes: "grid"
     least_squares: "grid"
-    svm: "random"
+    svm: "grid"
     neural_network: "grid"
 
   random_search_iterations:
-    svm: 20
+    svm: 8
   
   sample_sizes:
     svm: 0.5

@@ -42,10 +42,9 @@ models:
 
   svm:
     kernel: "rbf"
-    C: 1.0
     gamma: "scale"
-    probability: true
     class_weight: "balanced"
+    C: 100.0
     random_state: 42
 
   logistic_regression:
