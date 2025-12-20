@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+from sklearn.metrics import confusion_matrix, roc_curve, auc
 
 class VisualizationUtils:
     """
@@ -62,4 +63,43 @@ class VisualizationUtils:
         mask = np.triu(np.ones_like(df.corr(), dtype=bool))
         sns.heatmap(df.corr(), mask=mask, annot=True, cmap='coolwarm', fmt=".2f")
         plt.title(title, fontweight='bold')
+        plt.show()
+
+    @staticmethod
+    def plot_model_performance(model_obj, X_test, y_test):
+        """
+        Displays the confusion matrix and ROC curve on a single row.
+        """
+        y_pred = model_obj.predict(X_test)
+        model_name = model_obj.name
+        
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
+        fig.suptitle(f"Évaluation des performances : {model_name}", fontsize=16, fontweight='bold')
+
+        cm = confusion_matrix(y_test, y_pred)
+        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax1,
+                    xticklabels=['Non-Dangereux', 'Dangereux'],
+                    yticklabels=['Non-Dangereux', 'Dangereux'])
+        ax1.set_title("Matrice de Confusion")
+        ax1.set_xlabel("Prédiction")
+        ax1.set_ylabel("Vrai label")
+
+        if hasattr(model_obj.model, "predict_proba"):
+            probs = model_obj.model.predict_proba(X_test)[:, 1]
+            fpr, tpr, _ = roc_curve(y_test, probs)
+            roc_auc = auc(fpr, tpr)
+
+            ax2.plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC AUC = {roc_auc:.2f}')
+            ax2.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+            ax2.set_title("Courbe ROC")
+            ax2.set_xlabel("Taux de Faux Positifs (FPR)")
+            ax2.set_ylabel("Taux de Vrais Positifs (TPR)")
+            ax2.legend(loc="lower right")
+            ax2.grid(alpha=0.3)
+        else:
+            ax2.text(0.5, 0.5, "Courbe ROC non disponible\n(Le modèle ne supporte pas predict_proba)", 
+                    ha='center', va='center', fontsize=12, color='red')
+            ax2.set_title("Courbe ROC (Indisponible)")
+
+        plt.tight_layout(rect=[0, 0.03, 1, 0.95])
         plt.show()
