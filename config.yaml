@@ -7,8 +7,8 @@ paths:
 
 # Model comparison configuration
 model_comparison:
-  plot_n_cols: 4  # Number of columns in comparison plot grid
-  plot_figsize: [20, 12]  # Figure size [width, height] in inches
+  plot_n_cols: 4  
+  plot_figsize: [20, 12] 
 
 # Data preprocessing configuration
 preprocessing:
