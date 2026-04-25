@@ -61,8 +61,8 @@ Python >= 3.8
 
 ### Installation
 ```bash
-git clone https://github.com/RobinBecard/IFT712_Project.git
-cd IFT712_Project
+git clone https://github.com/RobinBecard/NASA_Near-Earth-Objects_Classification.git
+cd NASA_Near-Earth-Objects_Classification
 pip install -r requirements.txt
 ```
 
